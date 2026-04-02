@@ -6,6 +6,12 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+}
+
 export interface AuthResponse {
   token: string;
   expiresIn: number;
@@ -125,6 +131,13 @@ class ApiService {
   // Auth endpoints
   public async login(credentials: LoginRequest): Promise<AuthResponse> {
     const response: AxiosResponse<AuthResponse> = await this.api.post('/auth/login', credentials);
+    localStorage.setItem('token', response.data.token);
+    return response.data;
+  }
+
+  public async register(data: RegisterRequest): Promise<AuthResponse> {
+    const response: AxiosResponse<AuthResponse> = await this.api.post('/auth/register', data);
+    // Auto-login after successful registration
     localStorage.setItem('token', response.data.token);
     return response.data;
   }

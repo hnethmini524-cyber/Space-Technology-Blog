@@ -15,7 +15,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from '@nextui-org/react';
-import { Plus, BookOpen, Edit3, LogOut, User, BookDashed } from 'lucide-react';
+import { Plus, Edit3, LogOut, BookDashed } from 'lucide-react';
 
 interface NavBarProps {
   isAuthenticated: boolean;
@@ -83,7 +83,7 @@ const NavBar: React.FC<NavBarProps> = ({
       <NavbarContent justify="end">
         {isAuthenticated ? (
           <>
-            <NavbarItem>
+            <NavbarItem className="hidden md:flex">
               <Button
                 as={Link}
                 to="/posts/drafts"
@@ -121,7 +121,7 @@ const NavBar: React.FC<NavBarProps> = ({
                     key="drafts"
                     startContent={<Edit3 size={16} />}
                   >
-                    <Link to="/posts/drafts">My Drafts</Link>
+                    <Link to="/posts/drafts" className="w-full block">My Drafts</Link>
                   </DropdownItem>
                   <DropdownItem
                     key="logout"
@@ -137,13 +137,18 @@ const NavBar: React.FC<NavBarProps> = ({
             </NavbarItem>
           </>
         ) : (
-          <>
+          <div className="flex items-center gap-2">
             <NavbarItem>
-              <Button as={Link} to="/login" variant="flat">
+              <Button as={Link} to="/login" variant="light" className="text-default-600">
                 Log In
               </Button>
             </NavbarItem>
-          </>
+            <NavbarItem>
+              <Button as={Link} to="/register" color="primary" variant="flat">
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </div>
         )}
       </NavbarContent>
 
@@ -163,6 +168,20 @@ const NavBar: React.FC<NavBarProps> = ({
             </Link>
           </NavbarMenuItem>
         ))}
+        {!isAuthenticated && (
+          <>
+            <NavbarMenuItem>
+              <Link to="/login" className="w-full text-default-600" onClick={() => setIsMenuOpen(false)}>
+                Log In
+              </Link>
+            </NavbarMenuItem>
+            <NavbarMenuItem>
+              <Link to="/register" className="w-full text-primary" onClick={() => setIsMenuOpen(false)}>
+                Sign Up
+              </Link>
+            </NavbarMenuItem>
+          </>
+        )}
       </NavbarMenu>
     </Navbar>
   );

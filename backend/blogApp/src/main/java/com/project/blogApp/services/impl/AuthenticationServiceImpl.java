@@ -1,5 +1,10 @@
 package com.project.blogApp.services.impl;
 
+import com.project.blogApp.domain.dtos.AuthResponse;
+import com.project.blogApp.domain.dtos.RegisterRequest;
+import com.project.blogApp.domain.entities.User;
+import com.project.blogApp.repositories.UserRepository;
+import com.project.blogApp.security.BlogUserDetails;
 import com.project.blogApp.services.AuthenticationService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -11,9 +16,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +28,9 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
+	
+	private final UserRepository userRepository; 
+    private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
@@ -29,6 +39,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private String secretKey;
 
     private final Long jwtExpiryMs = 86400000L;
+    
+    @Override
+    public AuthResponse register(RegisterRequest request) {
+        // 1. Check if user already exists
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("This contributor is already in the system!");
+        }
+
+        // 2. Build and hash the user
+        var user = User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        userRepository.save(user);
+
+        // 3. Generate token using the local method
+        var jwtToken = generateToken(new BlogUserDetails(user));
+        
+        // 4. Return using builder (if @Builder is on AuthResponse)
+        return AuthResponse.builder().token(jwtToken).build();
+    }
 
     @Override
     public UserDetails authenticate(String email, String password) {

@@ -1,6 +1,7 @@
 package com.project.blogApp.controllers;
 import com.project.blogApp.domain.dtos.AuthResponse;
 import com.project.blogApp.domain.dtos.LoginRequest;
+import com.project.blogApp.domain.dtos.RegisterRequest;
 import com.project.blogApp.services.AuthenticationService;
 
 import org.springframework.http.ResponseEntity;
@@ -13,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(path = "/api/v1/auth/login")
+@RequestMapping(path = "/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
         UserDetails userDetails = authenticationService.authenticate(
                 loginRequest.getEmail(),
@@ -31,5 +32,12 @@ public class AuthController {
                 .expiresIn(86400)
                 .build();
         return ResponseEntity.ok(authResponse);
+    }
+    
+    @PostMapping("/register") 
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) {
+        // This calls the register method we fixed in your AuthenticationServiceImpl
+        AuthResponse response = authenticationService.register(registerRequest);
+        return ResponseEntity.ok(response);
     }
 }
