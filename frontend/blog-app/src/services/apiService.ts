@@ -45,6 +45,16 @@ export interface Post {
   status?: PostStatus;
 }
 
+export interface Comment {
+  id: string;
+  content: string;
+  userName: string;
+  userProfile?: string;
+  createdAt: string;
+  likes: number;
+  userId?: string;
+}
+
 export interface CreatePostRequest {
   title: string;
   content: string;
@@ -216,6 +226,22 @@ class ApiService {
 
   public async deleteTag(id: string): Promise<void> {
     await this.api.delete(`/tags/${id}`);
+  }
+
+  // Add comments
+  public async getCommentsByPost(postId: string): Promise<Comment[]> {
+    const response: AxiosResponse<Comment[]> = await this.api.get(`/posts/${postId}/comments`);
+    return response.data;
+  }
+
+  public async addComment(postId: string, content: string): Promise<Comment> {
+    const response: AxiosResponse<Comment> = await this.api.post(`/posts/${postId}/comments`, { content });
+    return response.data;
+  }
+
+  public async likeComment(commentId: string): Promise<number> {
+    const response = await this.api.post(`/comments/${commentId}/like`);
+    return response.data.likes; 
   }
 }
 

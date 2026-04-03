@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { apiService } from '../services/apiService';
+import { useAuth } from '../components/AuthContext';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -9,6 +10,7 @@ const RegisterPage = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,6 +18,20 @@ const RegisterPage = () => {
     setIsLoading(true);
 
     try {
+      setIsLoading(true);
+      const response = await apiService.register({ name, email, password });
+      if (response && response.token) {
+      // Provide both email AND token if your useAuth.login requires 2 arguments
+      login(email, response.token); 
+      navigate('/'); // Redirect to dashboard
+      }
+    } catch (err: any) {
+      setError(err.message || 'Registration failed.');
+    } finally {
+      setIsLoading(false);
+    }
+
+    /*try {
       // Call the API service to register
       await apiService.register({ name, email, password });
       
@@ -26,7 +42,8 @@ const RegisterPage = () => {
       setError(err.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
-    }
+    }*/
+
   };
 
   return (

@@ -26,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             String token = extractToken(request);
+            // Only attempt validation if a token actually exists
             if (token != null) {
                 UserDetails userDetails = authenticationService.validateToken(token);
 
@@ -42,8 +43,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch(Exception ex) {
-            // Do not throw exceptions, just don't authenticate the user
-            log.warn("Received invalid auth token");
+            // Only log if it's a legitimate error, or just let the filter chain continue
+            // without setting the SecurityContext (which leads to a 403 on protected routes)
+            log.debug("No valid authentication found for request: {}", request.getRequestURI());
         }
 
         filterChain.doFilter(request, response);
