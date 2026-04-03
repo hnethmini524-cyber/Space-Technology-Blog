@@ -57,6 +57,8 @@ const PostPage: React.FC<PostPageProps> = ({
   const [comments, setComments] = useState<Comment[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
   useEffect(() => {
     const fetchPostData = async () => {
       try {
@@ -151,6 +153,28 @@ const PostPage: React.FC<PostPageProps> = ({
         ALLOWED_ATTR: []
       })
     };
+  };
+
+  const handleReplyTrigger = (userName: string) => {
+    setCommentText(prev => `@${userName.replace(/\s+/g, '')} ${prev}`);
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+      // Smooth scroll to the input area
+      textareaRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  const renderCommentContent = (content: string) => {
+     return content.split(' ').map((word, index) => {
+     if (word.startsWith('@')) {
+       return (
+         <span key={index} className="text-primary font-semibold hover:underline cursor-pointer">
+          {word}{' '}
+         </span>
+        );
+      }
+      return word + ' ';
+    });
   };
 
   if (loading) {
@@ -277,6 +301,7 @@ const PostPage: React.FC<PostPageProps> = ({
                 <span className="text-sm font-medium text-default-600">{post.author?.name}</span>
               </div>
               <Textarea
+                ref={textareaRef}
                 placeholder="What are your thoughts?"
                 variant="flat"
                 minRows={3}
@@ -323,7 +348,7 @@ const PostPage: React.FC<PostPageProps> = ({
                   </div>
                   
                   <p className="mt-3 text-gray-700 text-md leading-relaxed">
-                    {comment.content}
+                    {renderCommentContent(comment.content)}
                   </p>
 
                   <div className="flex items-center gap-6 mt-4">
@@ -331,7 +356,7 @@ const PostPage: React.FC<PostPageProps> = ({
                       <ThumbsUp size={16} className={comment.likes > 0 ? "fill-primary text-primary" : ""}/> 
                       <span className="font-medium">{comment.likes}</span>
                     </button>
-                    <button className="flex items-center gap-1.5 text-default-500 hover:text-black transition-colors text-sm">
+                    <button onClick={() => handleReplyTrigger(comment.userName)} className="flex items-center gap-1.5 text-default-500 hover:text-black transition-colors text-sm">
                       <MessageCircle size={16} /> 
                       <span className="font-medium">Reply</span>
                     </button>
