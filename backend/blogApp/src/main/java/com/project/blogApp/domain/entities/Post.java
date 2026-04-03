@@ -35,6 +35,9 @@ public class Post {
 
     @Column(nullable = false)
     private Integer readingTime;
+    
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
