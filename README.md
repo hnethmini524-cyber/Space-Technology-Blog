@@ -21,12 +21,13 @@ This project is being developed as a Community-Driven Space Technology Blog to:
 ✔ New features under development.
 
 
-## ✨ Planned Features
+## ✨ Planned Features to Add
 
 ✔ User Identity: Implementing JWT-based Registration <br>
-✔ Engagement: Developing a nested Comment System for community discussions. <br>
+✔ Engagement: Developing a Comment System for community discussions. <br>
 ✔ UI/UX: Complete overhaul to a space-tech themed interface. <br>
-✔ AI Space Chatbot: Integration for answering space-related technical queries. <br>
+✔ Image Uploading: Users can upload space-related images for posts. <br>
+✔ User Mentions: Implement @mention functionality to tag users in posts & comments. <br>
 
 ## 🛠 Tech Stack
 
@@ -34,6 +35,7 @@ This project is being developed as a Community-Driven Space Technology Blog to:
 * Backend: Java / Spring Boot <br>
 * Database: MySQL <br>
 * Security: Spring Security / JWT Authentication <br>
+* Media Storage: Cloudinary <br>
 
 ---
 
