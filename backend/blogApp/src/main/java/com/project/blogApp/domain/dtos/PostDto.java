@@ -18,6 +18,7 @@ public class PostDto {
     private UUID id;
     private String title;
     private String content;
+    private String imageUrl;
     private AuthorDto author;
     private CategoryDto category;
     private Set<TagDto> tags;

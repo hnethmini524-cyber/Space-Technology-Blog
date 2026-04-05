@@ -130,9 +130,25 @@ const PostList: React.FC<PostListProps> = ({
                     </div>
                 </CardHeader>
                 <CardBody>
-                  <p className="line-clamp-3">
-                    {createExcerpt(post.content)}
-                  </p>
+                 <div className="flex gap-4">
+                    {/* Left Content */}
+                    <div className="flex-1">
+                      <p className="line-clamp-3">
+                        {createExcerpt(post.content)}
+                      </p>
+                    </div>
+
+                    {/* Right Image */}
+                    {post.imageUrl && (
+                      <div className="w-32 h-24 flex-shrink-0">
+                        <img
+                        src={post.imageUrl}
+                        alt={post.title}
+                        className="w-full h-full object-cover rounded-md"/>
+                      </div>
+                    )}
+
+                  </div>
                 </CardBody>
                 <CardFooter className="flex flex-wrap gap-3">
                   <div className="flex items-center gap-1 text-small text-default-500">

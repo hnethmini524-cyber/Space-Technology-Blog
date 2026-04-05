@@ -35,6 +35,7 @@ public class PostMapperImpl implements PostMapper {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .status(post.getStatus())
+                .imageUrl(post.getImageUrl())
                 .readingTime(post.getReadingTime())
                 .createdAt(post.getCreatedAt())
                 // Mapping the nested Category
@@ -57,6 +58,7 @@ public class PostMapperImpl implements PostMapper {
                 .content(dto.getContent())
                 .categoryId(dto.getCategoryId())
                 .tagIds(dto.getTagIds())
+                .imageUrl(dto.getImageUrl())
                 .status(dto.getStatus())
                 .build();
     }
@@ -71,6 +73,7 @@ public class PostMapperImpl implements PostMapper {
                 .content(dto.getContent())
                 .categoryId(dto.getCategoryId())
                 .tagIds(dto.getTagIds())
+                .imageUrl(dto.getImageUrl())
                 .status(dto.getStatus())
                 .build();
     }

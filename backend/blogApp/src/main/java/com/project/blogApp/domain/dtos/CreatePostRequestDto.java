@@ -36,4 +36,6 @@ public class CreatePostRequestDto {
 
     @NotNull(message = "Status is required")
     private PostStatus status;
+    
+    private String imageUrl;
 }

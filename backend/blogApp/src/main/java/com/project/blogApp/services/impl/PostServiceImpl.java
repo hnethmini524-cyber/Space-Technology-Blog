@@ -81,6 +81,7 @@ public class PostServiceImpl implements PostService {
         Post newPost = new Post();
         newPost.setTitle(createPostRequest.getTitle());
         newPost.setContent(createPostRequest.getContent());
+        newPost.setImageUrl(createPostRequest.getImageUrl());
         newPost.setStatus(createPostRequest.getStatus());
         newPost.setAuthor(user);
         newPost.setReadingTime(calculateReadingTime(createPostRequest.getContent()));
@@ -103,6 +104,7 @@ public class PostServiceImpl implements PostService {
 
         existingPost.setTitle(updatePostRequest.getTitle());
         String postContent = updatePostRequest.getContent();
+        existingPost.setImageUrl(updatePostRequest.getImageUrl());
         existingPost.setContent(postContent);
         existingPost.setStatus(updatePostRequest.getStatus());
         existingPost.setReadingTime(calculateReadingTime(postContent));

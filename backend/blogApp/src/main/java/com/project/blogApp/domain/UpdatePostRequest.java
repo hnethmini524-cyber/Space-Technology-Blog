@@ -28,4 +28,5 @@ public class UpdatePostRequest {
 
     private PostStatus status;
 
+    private String imageUrl;
 }

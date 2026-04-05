@@ -24,4 +24,6 @@ public class CreatePostRequest {
     private Set<UUID> tagIds = new HashSet<>();
 
     private PostStatus status;
+    
+    private String imageUrl;
 }

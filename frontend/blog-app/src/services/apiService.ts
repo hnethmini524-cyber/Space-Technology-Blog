@@ -33,6 +33,7 @@ export interface Post {
   id: string;
   title: string;
   content: string;
+  imageUrl?: string;
   author?: {
     id: string;
     name: string;
@@ -61,6 +62,7 @@ export interface CreatePostRequest {
   categoryId: string;
   tagIds: string[];
   status: PostStatus;
+  imageUrl?: string;
 }
 
 export interface UpdatePostRequest extends CreatePostRequest {
@@ -242,6 +244,23 @@ class ApiService {
   public async likeComment(commentId: string): Promise<number> {
     const response = await this.api.post(`/comments/${commentId}/like`);
     return response.data.likes; 
+  }
+
+  // Image upload
+  public async uploadImage(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await this.api.post("/images/upload",formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    );
+    {/*const response = await this.api.post("/images/upload", formData);*/}
+    return response.data;
   }
 }
 

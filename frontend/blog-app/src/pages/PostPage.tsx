@@ -59,6 +59,8 @@ const PostPage: React.FC<PostPageProps> = ({
 
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
+  const isAuthor = isAuthenticated && currentUserId === post.author?.id;
+
   useEffect(() => {
     const fetchPostData = async () => {
       try {
@@ -274,6 +276,9 @@ const PostPage: React.FC<PostPageProps> = ({
         <Divider className="my-6" />
 
         <CardBody className="px-0 py-4">
+          {post.imageUrl && (
+            <img src={post.imageUrl} alt={post.title} className="w-full max-h-[450px] object-cover rounded-lg"/>
+          )}
           <div 
             className="prose prose-lg max-w-none prose-slate"
             dangerouslySetInnerHTML={createSanitizedHTML(post.content)}
@@ -372,3 +377,4 @@ const PostPage: React.FC<PostPageProps> = ({
 };
 
 export default PostPage;
+

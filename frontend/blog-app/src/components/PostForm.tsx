@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Button,
   Card,
@@ -19,17 +19,21 @@ import Heading from '@tiptap/extension-heading';
 import BulletList from '@tiptap/extension-bullet-list';
 import OrderedList from '@tiptap/extension-ordered-list';
 import ListItem from '@tiptap/extension-list-item';
+import Image from '@tiptap/extension-image';
+
 import { 
   Bold, 
   Italic, 
   Undo, 
   Redo,
+  ImagePlus,
   List,
   ListOrdered,
   ChevronDown,
   X
 } from 'lucide-react';
 import { Post, Category, Tag, PostStatus } from '../services/apiService';
+import { apiService } from '../services/apiService';
 
 interface PostFormProps {
   initialPost?: Post | null;
@@ -39,6 +43,7 @@ interface PostFormProps {
     categoryId: string;
     tagIds: string[];
     status: PostStatus;
+    imageUrl?: string;
   }) => Promise<void>;
   onCancel: () => void;
   categories: Category[];
@@ -62,12 +67,21 @@ const PostForm: React.FC<PostFormProps> = ({
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const [imageUrl, setImageUrl] = useState(initialPost?.imageUrl || "");
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: false, // Disable default heading to use our custom config
         bulletList: false, // Disable default list to use our custom config
         orderedList: false, // Disable default list to use our custom config
+      }),
+      Image.configure({
+        inline: true,
+        HTMLAttributes: {
+        class: 'rounded-lg max-w-full h-auto my-4',},
       }),
       Heading.configure({
         levels: [1, 2, 3],
@@ -130,7 +144,23 @@ const PostForm: React.FC<PostFormProps> = ({
       categoryId: categoryId,
       tagIds: selectedTags.map(tag => tag.id),
       status,
+      imageUrl,
     });
+  };
+
+  const handleImageUpload = async (file: File) => {
+    try {
+      setUploading(true);
+      const url = await apiService.uploadImage(file);
+      setImageUrl(url);
+      if (url && editor) {
+        editor.chain().focus().setImage({ src: url }).run();
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleTagAdd = (tag: Tag) => {
@@ -255,6 +285,17 @@ const PostForm: React.FC<PostFormProps> = ({
                 <Redo size={16} />
               </Button>
             </div>
+            <div className="flex items-center gap-2 mb-2">
+              <label className="cursor-pointer"><input type="file" ref={fileInputRef} accept="image/*" hidden onChange={(e) => {
+                if (e.target.files?.[0]) {handleImageUpload(e.target.files[0]);}}} />
+                <Button isIconOnly size="sm" variant="flat" isLoading={uploading} onClick={() => fileInputRef.current?.click()}>
+                  <ImagePlus size={16} />
+                </Button>
+              </label>
+
+              {imageUrl && (<img src={imageUrl} className="h-10 rounded" />)}
+            </div>
+
             <EditorContent editor={editor} />
             {errors.content && (
               <div className="text-danger text-sm">{errors.content}</div>
