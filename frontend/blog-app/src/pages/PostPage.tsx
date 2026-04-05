@@ -319,41 +319,72 @@ const PostPage: React.FC<PostPageProps> = ({
             <h2 className="text-2xl font-bold text-gray-900">Responses ({comments.length})</h2>
             
             {/* Input Area */}
-            <Card className="p-5 shadow-md border border-default-100">
-              <div className="flex gap-3 items-center mb-4">
-                <Avatar size="sm" name={post.author?.name} />
-                <span className="text-sm font-medium text-default-600">{post.author?.name}</span>
-              </div>
-              <Textarea
-                ref={textareaRef}
-                placeholder="What are your thoughts?"
-                variant="flat"
-                minRows={3}
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-                classNames={{
-                  input: "text-lg",
-                  inputWrapper: "bg-transparent border-none p-0"
-                }}
-              />
-              <div className="flex justify-end gap-3 mt-4">
-                <Button variant="light" radius="full" size="sm" onClick={() => setCommentText("")}>
-                  Cancel
-                </Button>
-                <Button 
-                  color="success" 
-                  radius="full" 
-                  size="sm" 
-                  className="px-6 text-white font-medium"
-                  isDisabled={!commentText.trim()}
-                  isLoading={isSubmitting}
-                  onClick={handleCommentSubmit}
-                >
-                  Respond
-                </Button>
-              </div>
-            </Card>
-
+            {/* --- INPUT AREA --- */}
+            <div className="w-full mt-8">
+              {isAuthenticated ? (
+                /* Logged In View: Show the standard Textarea */
+                <Card className="p-5 shadow-md border border-default-100">
+                  <div className="flex gap-3 items-center mb-4">
+                    <Avatar size="sm" name={post.author?.name} />
+                    <span className="text-sm font-medium text-default-600">
+                      {post.author?.name}
+                      </span>
+                  </div>
+                  <Textarea
+                    ref={textareaRef}
+                    placeholder="What are your thoughts?"
+                    variant="flat"
+                    minRows={3}
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    classNames={{
+                      input: "text-lg",
+                      inputWrapper: "bg-transparent border-none p-0",
+                    }}
+                  />
+                  
+                  <div className="flex justify-end gap-3 mt-4">
+                    <Button
+                      variant="light"
+                      radius="full"
+                      size="sm"
+                      onClick={() => setCommentText("")}
+                    >
+                     Cancel
+                    </Button>
+                    <Button
+                      color="success"
+                      radius="full"
+                      size="sm"
+                      className="px-6 text-white font-medium"
+                      isDisabled={!commentText.trim()}
+                      isLoading={isSubmitting}
+                      onClick={handleCommentSubmit}
+                    >
+                     Respond
+                    </Button>
+                  </div>
+                </Card>
+              ) : (
+                /* Unauthorized View: Show the "Log in to respond" message */
+                <Card className="p-8 shadow-sm border border-dashed border-default-300 bg-default-50/50 flex flex-col items-center gap-4">
+                  <div className="flex flex-col items-center text-center gap-2">
+                    <MessageCircle size={32} className="text-default-400" />
+                      <p className="text-default-600 font-medium">Log in to share your thoughts on this post.</p>
+                  </div>
+                  <Button 
+                    as={Link} 
+                    to="/login" 
+                    color="primary" 
+                    variant="solid" 
+                    radius="full"
+                    className="px-8"
+                  >
+                    Log in to respond
+                  </Button>
+                </Card>
+                )}
+            </div>
             {/* Comments List */}
             <div className="space-y-12 pb-20">
               {comments.map((comment) => (
@@ -380,7 +411,7 @@ const PostPage: React.FC<PostPageProps> = ({
                       <ThumbsUp size={16} className={comment.likes > 0 ? "fill-primary text-primary" : ""}/> 
                       <span className="font-medium">{comment.likes}</span>
                     </button>
-                    <button onClick={() => handleReplyTrigger(comment.userName)} className="flex items-center gap-1.5 text-default-500 hover:text-black transition-colors text-sm">
+                    <button onClick={() => isAuthenticated ? handleReplyTrigger(comment.userName): navigate('/login')} className="flex items-center gap-1.5 text-default-500 hover:text-black transition-colors text-sm">
                       <MessageCircle size={16} /> 
                       <span className="font-medium">Reply</span>
                     </button>
