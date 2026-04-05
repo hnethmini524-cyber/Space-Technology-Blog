@@ -15,6 +15,8 @@ export interface RegisterRequest {
 export interface AuthResponse {
   token: string;
   expiresIn: number;
+  userId: string;
+  userName: string;
 }
 
 export interface Category {
@@ -144,6 +146,9 @@ class ApiService {
   public async login(credentials: LoginRequest): Promise<AuthResponse> {
     const response: AxiosResponse<AuthResponse> = await this.api.post('/auth/login', credentials);
     localStorage.setItem('token', response.data.token);
+    if (response.data.userId) {
+        localStorage.setItem('userId', response.data.userId);
+    }
     return response.data;
   }
 
@@ -151,11 +156,16 @@ class ApiService {
     const response: AxiosResponse<AuthResponse> = await this.api.post('/auth/register', data);
     // Auto-login after successful registration
     localStorage.setItem('token', response.data.token);
+    if (response.data.userId) {
+      localStorage.setItem('userId', response.data.userId);
+    }
     return response.data;
   }
 
   public logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    window.location.href = '/login';
   }
 
   // Posts endpoints

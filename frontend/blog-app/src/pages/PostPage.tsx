@@ -59,7 +59,26 @@ const PostPage: React.FC<PostPageProps> = ({
 
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
-  const isAuthor = isAuthenticated && currentUserId === post.author?.id;
+  const storedId = localStorage.getItem('userId');
+  const postAuthorId = post?.author?.id;
+
+  console.log("IDs:", { storedId, postAuthorId });
+
+  console.log("PERMISSION DEBUG:", { 
+    storedId, 
+    postAuthorId, 
+    isAuthenticated 
+  });
+  //const currentUserId = localStorage.getItem('userId');
+  const isAuthor = React.useMemo(() => {
+    const sId = localStorage.getItem('userId');
+    const pAuthId = post?.author?.id;
+  
+    if (!sId || !pAuthId) return false;
+  
+    // Clean comparison
+    return String(sId).toLowerCase() === String(pAuthId).toLowerCase();
+  }, [post, isAuthenticated]);
 
   useEffect(() => {
     const fetchPostData = async () => {
@@ -219,7 +238,7 @@ const PostPage: React.FC<PostPageProps> = ({
               Back to Posts
             </Button>
             <div className="flex gap-2">
-              {isAuthenticated && (
+              {isAuthor && (
                 <>
                   <Button
                     as={Link}
@@ -235,7 +254,7 @@ const PostPage: React.FC<PostPageProps> = ({
                     color="danger"
                     variant="flat"
                     startContent={<Trash size={16} />}
-                    onClick={handleDelete}
+                    onPress={handleDelete}
                     isLoading={isDeleting}
                     size="sm"
                   >

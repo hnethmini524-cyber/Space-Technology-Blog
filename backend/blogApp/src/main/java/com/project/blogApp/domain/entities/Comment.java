@@ -3,6 +3,9 @@ package com.project.blogApp.domain.entities;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,6 +30,7 @@ import lombok.NoArgsConstructor;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
 
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -36,10 +40,12 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @JsonIgnore // Prevents infinite recursion during JSON serialization
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

@@ -10,6 +10,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 @Entity
 @Table(name = "posts")
 @NoArgsConstructor
@@ -21,6 +24,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
 
     @Column(nullable = false)
@@ -40,10 +44,12 @@ public class Post {
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -53,6 +59,7 @@ public class Post {
             joinColumns = @JoinColumn(name="post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @Builder.Default
     private Set<Tag> tags = new HashSet<>();
 

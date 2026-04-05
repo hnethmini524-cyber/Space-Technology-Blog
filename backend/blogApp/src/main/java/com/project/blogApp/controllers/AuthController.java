@@ -2,6 +2,9 @@ package com.project.blogApp.controllers;
 import com.project.blogApp.domain.dtos.AuthResponse;
 import com.project.blogApp.domain.dtos.LoginRequest;
 import com.project.blogApp.domain.dtos.RegisterRequest;
+//import com.project.blogApp.domain.entities.User;
+//import com.project.blogApp.repositories.UserRepository;
+import com.project.blogApp.security.BlogUserDetails;
 import com.project.blogApp.services.AuthenticationService;
 
 import org.springframework.http.ResponseEntity;
@@ -27,9 +30,14 @@ public class AuthController {
                 loginRequest.getPassword()
         );
         String tokenValue = authenticationService.generateToken(userDetails);
+        
+        BlogUserDetails blogUserDetails = (BlogUserDetails) userDetails;
+        
         AuthResponse authResponse = AuthResponse.builder()
                 .token(tokenValue)
                 .expiresIn(86400)
+                //.userId(user.getId().toString())
+                .userId(blogUserDetails.getId().toString())
                 .build();
         return ResponseEntity.ok(authResponse);
     }
