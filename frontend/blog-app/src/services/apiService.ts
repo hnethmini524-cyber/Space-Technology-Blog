@@ -249,14 +249,19 @@ class ApiService {
     return response.data;
   }
 
+
   public async addComment(postId: string, content: string): Promise<Comment> {
     const response: AxiosResponse<Comment> = await this.api.post(`/posts/${postId}/comments`, { content });
     return response.data;
-  }
+  } 
 
   public async likeComment(commentId: string): Promise<number> {
     const response = await this.api.post(`/comments/${commentId}/like`);
     return response.data.likes; 
+  }
+
+  public async deleteComment(commentId: string): Promise<void> {
+    await this.api.delete(`/comments/${commentId}`);
   }
 
   // Image upload
@@ -264,15 +269,14 @@ class ApiService {
     const formData = new FormData();
     formData.append("file", file);
 
+    //const response = await this.api.post('/images/upload', formData);
     const response = await this.api.post("/images/upload",formData,
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       }
     );
-    {/*const response = await this.api.post("/images/upload", formData);*/}
     return response.data;
   }
 }

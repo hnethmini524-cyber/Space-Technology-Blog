@@ -11,6 +11,7 @@ public class CommentResponseDto {
     private UUID id;
     private String content;
     private String userName;
+    private UUID userId;
     private int likes;
     private LocalDateTime createdAt;
 
@@ -18,6 +19,7 @@ public class CommentResponseDto {
         this.id = comment.getId();
         this.content = comment.getContent();
         this.userName = comment.getUser().getName();
+        this.userId = comment.getUser().getId();
         this.likes = comment.getLikes();
         this.createdAt = comment.getCreatedAt();
     }

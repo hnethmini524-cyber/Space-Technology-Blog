@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,5 +78,19 @@ public class CommentController {
         Comment updatedComment = commentRepository.save(comment);
         
         return ResponseEntity.ok(new CommentResponseDto(updatedComment));
+    }
+    
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable UUID commentId, Principal principal) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
+
+        // Security check: Only the comment owner can delete it
+        if (!comment.getUser().getEmail().equals(principal.getName())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        commentRepository.delete(comment);
+        return ResponseEntity.noContent().build();
     }
 }

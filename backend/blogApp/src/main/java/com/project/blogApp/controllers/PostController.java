@@ -14,7 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+//import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,7 +60,8 @@ public class PostController {
     @PutMapping(path = "/{id}")
     public ResponseEntity<PostDto> updatePost(
             @PathVariable UUID id,
-            @Valid @RequestBody UpdatePostRequestDto updatePostRequestDto, @AuthenticationPrincipal User user) {
+            @Valid @RequestBody UpdatePostRequestDto updatePostRequestDto, @RequestAttribute UUID userId) {
+    	User user = userService.getUserById(userId);
         UpdatePostRequest updatePostRequest = postMapper.toUpdatePostRequest(updatePostRequestDto);
         Post updatedPost = postService.updatePost(id, updatePostRequest, user);
         PostDto updatedPostDto = postMapper.toDto(updatedPost);
@@ -77,7 +78,8 @@ public class PostController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable UUID id, @AuthenticationPrincipal User currentUser) {
+    public ResponseEntity<Void> deletePost(@PathVariable UUID id, @RequestAttribute UUID userId) {
+    	User currentUser = userService.getUserById(userId);
         postService.deletePost(id, currentUser);
         return ResponseEntity.noContent().build();
     }

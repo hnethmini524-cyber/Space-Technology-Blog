@@ -11,6 +11,10 @@ import {
   Divider,
   Avatar,
   Textarea,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from '@nextui-org/react';
 import { 
   Calendar,
@@ -37,6 +41,7 @@ interface Comment {
   content: string;
   userName: string;
   userProfile?: string;
+  userId: string;
   createdAt: string;
   likes: number;
 }
@@ -63,12 +68,23 @@ const PostPage: React.FC<PostPageProps> = ({
   const postAuthorId = post?.author?.id;
 
   console.log("IDs:", { storedId, postAuthorId });
+  console.log("Current User ID:", storedId);
+  const token = localStorage.getItem('token');
 
-  console.log("PERMISSION DEBUG:", { 
-    storedId, 
-    postAuthorId, 
-    isAuthenticated 
-  });
+  console.log("--- AUTH CHECK ---");
+  console.log("Stored UserID:", storedId);
+  console.log("Token Present:", !!token); 
+  console.log("------------------");
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!window.confirm('Are you sure you want to delete this comment?')) return;
+    try {
+      await apiService.deleteComment(commentId);
+      setComments(prev => prev.filter(c => c.id !== commentId));
+    } catch (err) {
+      console.error("Failed to delete comment:", err);
+    }
+  };
   //const currentUserId = localStorage.getItem('userId');
   const isAuthor = React.useMemo(() => {
     const sId = localStorage.getItem('userId');
@@ -396,9 +412,31 @@ const PostPage: React.FC<PostPageProps> = ({
                         <p className="text-xs text-default-500">{formatDate(comment.createdAt)}</p>
                       </div>
                     </div>
-                    <Button isIconOnly variant="light" radius="full" size="sm">
-                      <MoreHorizontal size={18} className="text-default-400" />
-                    </Button>
+
+                    {/* DROP-DOWN MENU FOR DELETE */}
+                    <Dropdown placement="bottom-end">
+                      <DropdownTrigger>
+                        <Button isIconOnly variant="light" radius="full" size="sm">
+                          <MoreHorizontal size={18} className="text-default-400" />
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu aria-label="Comment actions">
+                         {/* Check if current user is the author of the comment OR the post author */}
+                         {(storedId === comment.userId || isAuthor) ? (
+                          <DropdownItem 
+                              key="delete" 
+                              className="text-danger" 
+                              color="danger"
+                              startContent={<Trash size={14} />}
+                              onClick={() => handleDeleteComment(comment.id)}
+                            >
+                              Delete
+                          </DropdownItem>
+                          ) : (
+                        <DropdownItem key="report">Delete</DropdownItem>
+                        )}
+                      </DropdownMenu>
+                    </Dropdown>
                   </div>
                   
                   <p className="mt-3 text-gray-700 text-md leading-relaxed">
