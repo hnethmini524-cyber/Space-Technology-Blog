@@ -38,6 +38,7 @@ public class AuthController {
                 .expiresIn(86400)
                 //.userId(user.getId().toString())
                 .userId(blogUserDetails.getId().toString())
+                .userName(blogUserDetails.getUsername())
                 .build();
         return ResponseEntity.ok(authResponse);
     }

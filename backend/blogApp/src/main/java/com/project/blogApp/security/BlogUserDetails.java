@@ -32,9 +32,10 @@ public class BlogUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getName();
     }
 
+    //getEmail
     @Override
     public boolean isAccountNonExpired() {
         return true;

@@ -149,6 +149,9 @@ class ApiService {
     if (response.data.userId) {
         localStorage.setItem('userId', response.data.userId);
     }
+    if (response.data.userName) {
+        localStorage.setItem('userName', response.data.userName);
+    }
     return response.data;
   }
 

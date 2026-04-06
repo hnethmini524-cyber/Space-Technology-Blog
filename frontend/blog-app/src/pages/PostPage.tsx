@@ -319,15 +319,14 @@ const PostPage: React.FC<PostPageProps> = ({
             <h2 className="text-2xl font-bold text-gray-900">Responses ({comments.length})</h2>
             
             {/* Input Area */}
-            {/* --- INPUT AREA --- */}
             <div className="w-full mt-8">
               {isAuthenticated ? (
                 /* Logged In View: Show the standard Textarea */
                 <Card className="p-5 shadow-md border border-default-100">
                   <div className="flex gap-3 items-center mb-4">
-                    <Avatar size="sm" name={post.author?.name} />
+                    <Avatar size="sm" name={localStorage.getItem('userName') || 'User'} />
                     <span className="text-sm font-medium text-default-600">
-                      {post.author?.name}
+                      {localStorage.getItem('userName') || 'You'}
                       </span>
                   </div>
                   <Textarea
