@@ -6,6 +6,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -68,6 +70,10 @@ public class Post {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+    
+    @Builder.Default 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
