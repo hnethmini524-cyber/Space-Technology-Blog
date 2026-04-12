@@ -119,61 +119,55 @@ const PostList: React.FC<PostListProps> = ({
           <div className="space-y-4">
             {posts?.map((post) => (
               <Card key={post.id} className="w-full p-2" isPressable={true} onPress={() => navToPostPage(post)}>
-                <CardHeader className="flex gap-3">                 
-                    <div className='flex flex-col'>
-                    <h2 className="text-xl font-bold text-left">
-                      {post.title}
-                    </h2>
-                    <p className="text-small text-default-500">
-                      by {post.author?.name}
-                    </p>                
-                    </div>
-                </CardHeader>
                 <CardBody>
-                 <div className="flex gap-4">
-                    {/* Left Content */}
-                    <div className="flex-1">
-                      <p className="line-clamp-3">
+                  <div className="flex flex-row gap-6 items-start">
+                    <div className="flex-1 flex flex-col gap-2">
+                      <div>
+                        <h2 className="text-2xl font-bold text-left leading-tight">{post.title}</h2>
+                        <p className="text-small text-default-500 mt-1">by {post.author?.name}</p>
+                      </div>
+                      
+                      {/* Excerpt */}
+                      <p className="line-clamp-3 text-default-600">
                         {createExcerpt(post.content)}
                       </p>
                     </div>
-
-                    {/* Right Image */}
+                    
+                    {/* Right Side: Large Fixed-Ratio Image */}
                     {post.imageUrl && (
-                      <div className="w-32 h-24 flex-shrink-0">
+                      <div className="w-48 h-32 md:w-60 md:h-40 flex-shrink-0">
                         <img
-                        src={post.imageUrl}
-                        alt={post.title}
-                        className="w-full h-full object-cover rounded-md"/>
+                          src={post.imageUrl}
+                          alt={post.title}
+                          className="w-full h-full object-cover rounded-xl shadow-sm"
+                        />
                       </div>
                     )}
-
                   </div>
                 </CardBody>
-                <CardFooter className="flex flex-wrap gap-3">
+                
+                <CardFooter className="flex flex-wrap gap-3 pt-0">
                   <div className="flex items-center gap-1 text-small text-default-500">
-                    <Calendar size={16} />
-                    {formatDate(post.createdAt)}
+                    <Calendar size={16} />{formatDate(post.createdAt)}
                   </div>
                   <div className="flex items-center gap-1 text-small text-default-500">
                     <Clock size={16} />
                     {post.readingTime} min read
                   </div>
+                  
                   <div className="flex flex-wrap gap-2">
-                    <Chip
-                      className="bg-primary-100 text-primary"
-                    >
+                    <Chip size="sm" className="bg-primary-100 text-primary">
                       {post.category.name}
                     </Chip>
                     {post.tags.map((tag) => (
-                      <Chip
-                        key={tag.id}
-                        className="bg-default-100"
-                        startContent={<Tag size={14} />}
-                      >
-                        {tag.name}
-                      </Chip>
-                    ))}
+                    <Chip
+                      key={tag.id}
+                      size="sm"
+                      className="bg-default-100"
+                      startContent={<Tag size={14} />}
+                    >
+                      {tag.name}
+                    </Chip>))}
                   </div>
                 </CardFooter>
               </Card>

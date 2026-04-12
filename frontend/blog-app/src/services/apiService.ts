@@ -55,7 +55,7 @@ export interface Comment {
   userProfile?: string;
   createdAt: string;
   likes: number;
-  userId?: string;
+  userId: string;
 }
 
 export interface CreatePostRequest {

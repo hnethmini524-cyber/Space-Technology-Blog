@@ -56,63 +56,65 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 space-y-6">
-      <Card className="mb-6 px-2">
-        <CardHeader>
-          <h1 className="text-2xl font-bold">Blog Posts</h1>
-        </CardHeader>
-        <CardBody>
-          <div className="flex flex-col gap-4">                     
-            <Tabs 
-              selectedKey={selectedCategory} 
-              onSelectionChange={(key) => {
-                handleCategoryChange(key as string)
-              }}
-              variant="underlined"
-              classNames={{
-                tabList: "gap-6",
-                cursor: "w-full bg-primary",
-              }}
-            >
-              <Tab key="all" title="All Posts" />
-              {categories.map((category) => (
-                <Tab 
-                  key={category.id} 
-                  title={`${category.name} (${category.postCount})`}
-                />
-              ))}
-            </Tabs>
-
-            {tags.length > 0 && (
-              <div className="flex gap-2 flex-wrap">
-                {tags.map((tag) => (
-                  <button
-                    key={tag.id}
-                    onClick={() => setSelectedTag(selectedTag == tag.id ? undefined : tag.id)}
-                    className={`px-3 py-1 rounded-full text-sm ${
-                      selectedTag === tag.id
-                        ? 'bg-primary text-white'
-                        : 'bg-default-100 hover:bg-default-200'
-                    }`}
-                  >
-                    {tag.name} ({tag.postCount})
-                  </button>
+    <div className="min-h-screen w-full bg-[#030617] text-white">
+      <div className="max-w-6xl mx-auto px-4 py-10 space-y-6">
+        <Card className="mb-6 px-2">
+          <CardHeader>
+            <h1 className="text-2xl font-bold">Blog Posts</h1>
+          </CardHeader>
+          <CardBody>
+            <div className="flex flex-col gap-4">                     
+              <Tabs 
+                selectedKey={selectedCategory} 
+                onSelectionChange={(key) => {
+                  handleCategoryChange(key as string)
+                }}
+                variant="underlined"
+                classNames={{
+                  tabList: "gap-6",
+                  cursor: "w-full bg-primary",
+                }}
+              >
+                <Tab key="all" title="All Posts" />
+                {categories.map((category) => (
+                  <Tab 
+                    key={category.id} 
+                    title={`${category.name} (${category.postCount})`}
+                  />
                 ))}
-              </div>
-            )}
-          </div>
-        </CardBody>
-      </Card>
+              </Tabs>
 
-      <PostList
-        posts={posts}
-        loading={loading}
-        error={error}
-        page={page}
-        sortBy={sortBy}
-        onPageChange={setPage}
-        onSortChange={setSortBy}
-      />
+              {tags.length > 0 && (
+                <div className="flex gap-2 flex-wrap">
+                  {tags.map((tag) => (
+                    <button
+                      key={tag.id}
+                      onClick={() => setSelectedTag(selectedTag == tag.id ? undefined : tag.id)}
+                      className={`px-3 py-1 rounded-full text-sm ${
+                        selectedTag === tag.id
+                          ? 'bg-primary text-white'
+                          : 'bg-default-100 hover:bg-default-200'
+                      }`}
+                    >
+                      {tag.name} ({tag.postCount})
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </CardBody>
+        </Card>
+
+        <PostList
+          posts={posts}
+          loading={loading}
+          error={error}
+          page={page}
+          sortBy={sortBy}
+          onPageChange={setPage}
+          onSortChange={setSortBy}
+        />
+      </div>
     </div>
   );
 };

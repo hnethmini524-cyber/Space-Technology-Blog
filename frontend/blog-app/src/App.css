@@ -4,14 +4,25 @@
 
 
 html, body, #root {
-  height: 100vh;
+  /* Change 'height' to 'min-height' */
+  min-height: 100vh; 
   margin: 0;
   padding: 0;
+  background-color: #030617;
+  /* Ensure the background color covers the entire scrollable area */
+  background-attachment: fixed; 
 }
 
 #root {
   width: 100%;
-  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .ProseMirror {
@@ -57,7 +68,40 @@ html, body, #root {
   }
 }
 
+.ProseMirror {
+  min-height: 400px;
+  height: 100%;
+  overflow-y: auto;
+  background-color: transparent;
+  color: white;
+}
+
+.ProseMirror img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
 /* Style for focused editor */
 .ProseMirror:focus {
   outline: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fix for Typography Plugin in Dark Mode */
+.prose-invert {
+  --tw-prose-body: rgba(255, 255, 255, 0.8);
+  --tw-prose-headings: #ffffff;
+  --tw-prose-links: #0070f3;
+  --tw-prose-bold: #ffffff;
+}
+
+/* NextUI Card Dark Mode Manual Override */
+.dark-card {
+  background-color: #0b1121 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }

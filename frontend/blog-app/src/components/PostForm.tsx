@@ -99,7 +99,7 @@ const PostForm: React.FC<PostFormProps> = ({
     content: initialPost?.content || '',
     editorProps: {
       attributes: {
-        class: 'prose max-w-none focus:outline-none min-h-[400px] px-4 py-2 border rounded-lg',
+        class: 'prose max-w-none focus:outline-none min-h-[400px] px-4 py-2 border rounded-lg bg-white text-gray-900',
       },
     },
   });

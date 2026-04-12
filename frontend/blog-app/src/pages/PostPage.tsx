@@ -240,7 +240,7 @@ const PostPage: React.FC<PostPageProps> = ({
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
+    <div className="max-w-3xl mx-auto px-4 py-10 text-white">
       <Card className="w-full shadow-none border-none bg-transparent">
         <CardHeader className="flex flex-col items-start gap-3">
           <div className="flex justify-between w-full">
@@ -250,6 +250,7 @@ const PostPage: React.FC<PostPageProps> = ({
               variant="flat"
               startContent={<ArrowLeft size={16} />}
               size="sm"
+              className="bg-white/10 text-white hover:bg-white/20"
             >
               Back to Posts
             </Button>
@@ -261,6 +262,7 @@ const PostPage: React.FC<PostPageProps> = ({
                     to={`/posts/${post.id}/edit`}
                     color="primary"
                     variant="flat"
+                    className="bg-blue-500/20 text-blue-400"
                     startContent={<Edit size={16} />}
                     size="sm"
                   >
@@ -269,6 +271,7 @@ const PostPage: React.FC<PostPageProps> = ({
                   <Button
                     color="danger"
                     variant="flat"
+                    className="bg-red-500/20 text-red-400"
                     startContent={<Trash size={16} />}
                     onPress={handleDelete}
                     isLoading={isDeleting}
@@ -280,6 +283,7 @@ const PostPage: React.FC<PostPageProps> = ({
               )}
               <Button
                 variant="flat"
+                className="bg-white/10 text-white"
                 startContent={<Share size={16} />}
                 onClick={handleShare}
                 size="sm"
@@ -288,73 +292,74 @@ const PostPage: React.FC<PostPageProps> = ({
               </Button>
             </div>
           </div>
-          <h1 className="text-3xl font-bold">{post.title}</h1>
+          <h1 className="text-3xl font-bold text-white tracking-tight">{post.title}</h1>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Avatar
                 name={post.author?.name}
                 size="sm"
+                className="ring-2 ring-primary/30"
               />
-              <span className="text-default-600">{post.author?.name}</span>
+              <span className="text-white/80 font-medium">{post.author?.name}</span>
             </div>
-            <div className="flex items-center gap-2 text-default-500">
+            <div className="flex items-center gap-2 text-white/50">
               <Calendar size={16} />
               <span>{formatDate(post.createdAt)}</span>
             </div>
-            <div className="flex items-center gap-2 text-default-500">
+            <div className="flex items-center gap-2 text-white/50">
               <Clock size={16} />
               <span>{post.readingTime} min read</span>
             </div>
           </div>
         </CardHeader>
 
-        <Divider className="my-6" />
+        <Divider className="my-6 bg-white/10" />
 
         <CardBody className="px-0 py-4">
           {post.imageUrl && (
-            <img src={post.imageUrl} alt={post.title} className="w-full max-h-[450px] object-cover rounded-lg"/>
+            <img src={post.imageUrl} alt={post.title} className="w-full max-h-[450px] object-cover rounded-lg mb-8 border border-white/10 shadow-2xl"/>
           )}
           <div 
-            className="prose prose-lg max-w-none prose-slate"
+            className="prose prose-lg max-w-none prose-invert prose-headings:text-white text-white/80 prose-strong:text-primary"
             dangerouslySetInnerHTML={createSanitizedHTML(post.content)}
           />
         </CardBody>
 
         <CardFooter className="flex flex-col items-start gap-6 px-0">
           <div className="flex flex-wrap gap-2">
-            <Chip color="primary" variant="flat" size="sm">{post.category.name}</Chip>
+            <Chip color="primary" variant="flat" size="sm" className="border-primary/50 text-white">{post.category.name}</Chip>
             {post.tags.map((tag) => (
-              <Chip key={tag.id} variant="dot" size="sm" startContent={<Tag size={12} />}>{tag.name}</Chip>
+              <Chip key={tag.id} variant="dot" size="sm" className="border-white/20 text-white/60" startContent={<Tag size={12} />}>{tag.name}</Chip>
             ))}
           </div>
           
-          <Divider className="mt-4" />
+          <Divider className="mt-4 bg-white/10" />
 
           {/* --- RESPONSES SECTION --- */}
           <div className="w-full mt-8 space-y-10">
-            <h2 className="text-2xl font-bold text-gray-900">Responses ({comments.length})</h2>
+            <h2 className="text-2xl font-bold text-white">Responses ({comments.length})</h2>
             
             {/* Input Area */}
             <div className="w-full mt-8">
               {isAuthenticated ? (
                 /* Logged In View: Show the standard Textarea */
-                <Card className="p-5 shadow-md border border-default-100">
+                <Card className="p-5 shadow-2xl bg-[#0b1121] border border-white/10">
                   <div className="flex gap-3 items-center mb-4">
                     <Avatar size="sm" name={localStorage.getItem('userName') || 'User'} />
-                    <span className="text-sm font-medium text-default-600">
+                    <span className="text-sm font-medium text-white/90">
                       {localStorage.getItem('userName') || 'You'}
                       </span>
                   </div>
                   <Textarea
                     ref={textareaRef}
                     placeholder="What are your thoughts?"
-                    variant="flat"
+                    variant="underlined"
                     minRows={3}
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
                     classNames={{
-                      input: "text-lg",
-                      inputWrapper: "bg-transparent border-none p-0",
+                      input: "text-white/40",
+                      inputWrapper: "border-white/10 px-0",
                     }}
                   />
                   
@@ -363,6 +368,7 @@ const PostPage: React.FC<PostPageProps> = ({
                       variant="light"
                       radius="full"
                       size="sm"
+                      className="text-white/50"
                       onClick={() => setCommentText("")}
                     >
                      Cancel
@@ -371,7 +377,7 @@ const PostPage: React.FC<PostPageProps> = ({
                       color="success"
                       radius="full"
                       size="sm"
-                      className="px-6 text-white font-medium"
+                      className="px-8 text-white font-bold bg-success/80 shadow-lg shadow-success/20"
                       isDisabled={!commentText.trim()}
                       isLoading={isSubmitting}
                       onClick={handleCommentSubmit}
@@ -383,7 +389,7 @@ const PostPage: React.FC<PostPageProps> = ({
               ) : (
                 /* Unauthorized View: Show the "Log in to respond" message */
                 <Card className="p-8 shadow-sm border border-dashed border-default-300 bg-default-50/50 flex flex-col items-center gap-4">
-                  <div className="flex flex-col items-center text-center gap-2">
+                  <div className="p-8 bg-white/5 border border-dashed border-white/20 flex flex-col items-center gap-4">
                     <MessageCircle size={32} className="text-default-400" />
                       <p className="text-default-600 font-medium">Log in to share your thoughts on this post.</p>
                   </div>
@@ -403,21 +409,21 @@ const PostPage: React.FC<PostPageProps> = ({
             {/* Comments List */}
             <div className="space-y-12 pb-20">
               {comments.map((comment) => (
-                <div key={comment.id} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+                <div key={comment.id} className="p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
                   <div className="flex justify-between items-start">
                     <div className="flex gap-3">
                       <Avatar name={comment.userName} size="sm" radius="full" />
                       <div>
-                        <p className="font-bold text-sm text-gray-900">{comment.userName}</p>
-                        <p className="text-xs text-default-500">{formatDate(comment.createdAt)}</p>
+                        <p className="font-bold text-sm text-white">{comment.userName}</p>
+                        <p className="text-xs text-white/40">{formatDate(comment.createdAt)}</p>
                       </div>
                     </div>
 
                     {/* DROP-DOWN MENU FOR DELETE */}
-                    <Dropdown placement="bottom-end">
+                    <Dropdown placement="bottom-end" className="dark bg-[#0b1121] border border-white/10">
                       <DropdownTrigger>
                         <Button isIconOnly variant="light" radius="full" size="sm">
-                          <MoreHorizontal size={18} className="text-default-400" />
+                          <MoreHorizontal size={18} className="text-white/40" />
                         </Button>
                       </DropdownTrigger>
                       <DropdownMenu aria-label="Comment actions">
@@ -439,7 +445,7 @@ const PostPage: React.FC<PostPageProps> = ({
                     </Dropdown>
                   </div>
                   
-                  <p className="mt-3 text-gray-700 text-md leading-relaxed">
+                  <p className="mt-3 text-white/80 text-md leading-relaxed">
                     {renderCommentContent(comment.content)}
                   </p>
 
@@ -448,7 +454,7 @@ const PostPage: React.FC<PostPageProps> = ({
                       <ThumbsUp size={16} className={comment.likes > 0 ? "fill-primary text-primary" : ""}/> 
                       <span className="font-medium">{comment.likes}</span>
                     </button>
-                    <button onClick={() => isAuthenticated ? handleReplyTrigger(comment.userName): navigate('/login')} className="flex items-center gap-1.5 text-default-500 hover:text-black transition-colors text-sm">
+                    <button onClick={() => isAuthenticated ? handleReplyTrigger(comment.userName): navigate('/login')} className="flex items-center gap-1.5 text-white/40 hover:text-white transition-colors text-sm">
                       <MessageCircle size={16} /> 
                       <span className="font-medium">Reply</span>
                     </button>

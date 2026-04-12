@@ -40,13 +40,14 @@ const DraftsPage: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4">
-      <Card>
+      <Card className="bg-[#0b1121]/50 border border-purple-500/50 shadow-[0_0_20px_rgba(168,85,247,0.4)] backdrop-blur-md rounded-2xl p-6">
         <CardHeader className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">My Drafts</h1>
+          <h1 className="text-2xl font-bold text-white/40">My Drafts</h1>
           <Button
             as={Link}
             to="/posts/new"
             color="primary"
+            className= "bg-[#a855f7]"
             startContent={<Plus size={16} />}
           >
             New Post
@@ -78,7 +79,7 @@ const DraftsPage: React.FC = () => {
                 to="/posts/new"
                 color="primary"
                 variant="flat"
-                className="mt-4"
+                className="mt-4 bg-[#a855f7]"
               >
                 Create Your First Post
               </Button>
