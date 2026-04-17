@@ -38,7 +38,10 @@ public class AuthController {
                 .expiresIn(86400)
                 //.userId(user.getId().toString())
                 .userId(blogUserDetails.getId().toString())
-                .userName(blogUserDetails.getUsername())
+                //.userName(blogUserDetails.getUsername())
+                .userName(blogUserDetails.getUser().getName())
+                .email(blogUserDetails.getUser().getEmail())
+                .createdAt(blogUserDetails.getCreatedAt().toString())
                 .build();
         return ResponseEntity.ok(authResponse);
     }

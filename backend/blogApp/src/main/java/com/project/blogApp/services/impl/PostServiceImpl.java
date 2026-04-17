@@ -148,5 +148,10 @@ public class PostServiceImpl implements PostService {
         int wordCount = content.trim().split("\\s+").length;
         return (int) Math.ceil((double) wordCount / WORDS_PER_MINUTE);
     }
+    
+    @Override
+    public List<Post> getPublishedPostsByUser(User user) {
+        return postRepository.findAllByAuthorAndStatus(user, PostStatus.PUBLISHED);
+    }
 
 }

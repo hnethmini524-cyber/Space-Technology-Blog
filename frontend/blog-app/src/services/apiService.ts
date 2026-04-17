@@ -17,6 +17,8 @@ export interface AuthResponse {
   expiresIn: number;
   userId: string;
   userName: string;
+  email: string;
+  createdAt: string;
 }
 
 export interface Category {
@@ -152,6 +154,13 @@ class ApiService {
     if (response.data.userName) {
         localStorage.setItem('userName', response.data.userName);
     }
+    if (response.data.createdAt) {
+    localStorage.setItem('userCreatedAt', response.data.createdAt);
+    }
+    // Also ensure email is saved
+    if (response.data.email) {
+        localStorage.setItem('userEmail', response.data.email);
+    }
     return response.data;
   }
 
@@ -162,6 +171,17 @@ class ApiService {
     if (response.data.userId) {
       localStorage.setItem('userId', response.data.userId);
     }
+    const displayName = response.data.userName || data.name;
+    localStorage.setItem('userName', displayName);
+
+    if (response.data.createdAt) {
+    localStorage.setItem('userCreatedAt', response.data.createdAt);
+    }
+    // Also ensure email is saved
+    if (response.data.email) {
+        localStorage.setItem('userEmail', response.data.email);
+    }
+
     return response.data;
   }
 
@@ -263,6 +283,16 @@ class ApiService {
   public async deleteComment(commentId: string): Promise<void> {
     await this.api.delete(`/comments/${commentId}`);
   }
+
+  public async getMyPosts(params: {
+    page?: number;
+    size?: number;
+    sort?: string;
+    status: PostStatus; // We can filter by status here
+  }): Promise<Post[]> {
+      const response: AxiosResponse<Post[]> = await this.api.get('/posts/me', { params });
+      return response.data;
+    }
 
   // Image upload
   public async uploadImage(file: File): Promise<string> {

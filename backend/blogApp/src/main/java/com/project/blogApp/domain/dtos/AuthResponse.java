@@ -16,4 +16,6 @@ public class AuthResponse {
     private long expiresIn;
     private String userId;   // Changed to String for easier JSON mapping
     private String userName;
+    private String email;
+    private String createdAt;
 }

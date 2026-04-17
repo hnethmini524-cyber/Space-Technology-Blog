@@ -10,6 +10,7 @@ import DraftsPage from "./pages/DraftsPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from './pages/RegisterPage';
 import { AuthProvider, useAuth } from "./components/AuthContext";
+import ProfilePage from "./pages/ProfilePage";
 
 // Protected Route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -67,6 +68,14 @@ function AppContent() {
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/profile" 
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </main>
     </BrowserRouter>
@@ -79,6 +88,6 @@ function App() {
       <AppContent />
     </AuthProvider>
   );
-}
+} 
 
 export default App;

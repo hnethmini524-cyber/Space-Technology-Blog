@@ -83,5 +83,14 @@ public class PostController {
         postService.deletePost(id, currentUser);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping(path = "/me")
+    public ResponseEntity<List<PostDto>> getMyPublishedPosts(@RequestAttribute UUID userId) {
+        User loggedInUser = userService.getUserById(userId);
+        // Use the existing repository logic via the service
+        List<Post> posts = postService.getPublishedPostsByUser(loggedInUser); 
+        List<PostDto> postDtos = posts.stream().map(postMapper::toDto).toList();
+        return ResponseEntity.ok(postDtos);
+    }
 
 }
