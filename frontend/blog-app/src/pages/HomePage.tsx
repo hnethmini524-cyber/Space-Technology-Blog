@@ -58,9 +58,9 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen w-full bg-[#030617] text-white">
       <div className="max-w-6xl mx-auto px-4 py-10 space-y-6">
-        <Card className="mb-6 px-2">
+        <Card className="space-card mb-6 px-2">
           <CardHeader>
-            <h1 className="text-2xl font-bold">Blog Posts</h1>
+            <h1 className="text-2xl font-bold text-slate-400">Blog Posts</h1>
           </CardHeader>
           <CardBody>
             <div className="flex flex-col gap-4">                     
@@ -73,9 +73,10 @@ const HomePage: React.FC = () => {
                 classNames={{
                   tabList: "gap-6",
                   cursor: "w-full bg-primary",
+                  tabContent: "group-data-[selected=true]:text-cyan-400",
                 }}
               >
-                <Tab key="all" title="All Posts" />
+                <Tab key="all" title="All Posts"/>
                 {categories.map((category) => (
                   <Tab 
                     key={category.id} 
@@ -90,11 +91,7 @@ const HomePage: React.FC = () => {
                     <button
                       key={tag.id}
                       onClick={() => setSelectedTag(selectedTag == tag.id ? undefined : tag.id)}
-                      className={`px-3 py-1 rounded-full text-sm ${
-                        selectedTag === tag.id
-                          ? 'bg-primary text-white'
-                          : 'bg-default-100 hover:bg-default-200'
-                      }`}
+                      className={`tag-asteroid ${selectedTag === tag.id ? 'tag-asteroid-active' : ''}`}
                     >
                       {tag.name} ({tag.postCount})
                     </button>

@@ -45,7 +45,7 @@ const NavBar: React.FC<NavBarProps> = ({
       isBordered
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      className="mb-6"
+      className="mb-6 bg-gray-950/80 backdrop-blur-xl border-b border-white/10"
     >
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
@@ -53,13 +53,13 @@ const NavBar: React.FC<NavBarProps> = ({
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand>
-          <Link to="/" className="font-bold text-inherit">Blog Platform</Link>
+          <Link to="/" className="nav-logo-gradient">Blog Platform</Link>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="start">
         <NavbarBrand>
-          <Link to="/" className="font-bold text-inherit">Blog Platform</Link>
+          <Link to="/" className="nav-logo-gradient">Blog Platform</Link>
         </NavbarBrand>
         {menuItems.map((item) => (
           <NavbarItem
@@ -68,11 +68,7 @@ const NavBar: React.FC<NavBarProps> = ({
           >
             <Link
               to={item.path}
-              className={`text-sm ${
-                location.pathname === item.path
-                  ? 'text-primary'
-                  : 'text-default-600'
-              }`}
+              className={`nav-link-plasma ${location.pathname === item.path ? 'nav-link-active' : ''}`}
             >
               {item.name}
             </Link>
@@ -88,6 +84,7 @@ const NavBar: React.FC<NavBarProps> = ({
                 as={Link}
                 to="/posts/drafts"
                 color="secondary"
+                className="btn-nebula"
                 variant="flat"
                 startContent={<BookDashed size={16} />}
               >
@@ -99,6 +96,7 @@ const NavBar: React.FC<NavBarProps> = ({
                 as={Link}
                 to="/posts/new"
                 color="primary"
+                className="btn-nebula"
                 variant="flat"
                 startContent={<Plus size={16} />}
               >

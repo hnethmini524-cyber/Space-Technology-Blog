@@ -118,24 +118,24 @@ const PostList: React.FC<PostListProps> = ({
         <>
           <div className="space-y-4">
             {posts?.map((post) => (
-              <Card key={post.id} className="w-full p-2" isPressable={true} onPress={() => navToPostPage(post)}>
+              <Card key={post.id} className="post-card-space w-full p-2" isPressable={true} onPress={() => navToPostPage(post)}>
                 <CardBody>
                   <div className="flex flex-row gap-6 items-start">
                     <div className="flex-1 flex flex-col gap-2">
                       <div>
-                        <h2 className="text-2xl font-bold text-left leading-tight">{post.title}</h2>
-                        <p className="text-small text-default-500 mt-1">by {post.author?.name}</p>
+                        <h2 className="text-2xl font-bold text-left leading-tight text-white/80">{post.title}</h2>
+                        <p className="text-small text-default-500 mt-1 text-white/60">by {post.author?.name}</p>
                       </div>
                       
                       {/* Excerpt */}
-                      <p className="line-clamp-3 text-default-600">
+                      <p className="line-clamp-3 text-default-600 text-white/40">
                         {createExcerpt(post.content)}
                       </p>
                     </div>
                     
                     {/* Right Side: Large Fixed-Ratio Image */}
                     {post.imageUrl && (
-                      <div className="w-48 h-32 md:w-60 md:h-40 flex-shrink-0">
+                      <div className="image-container-space w-48 h-32 md:w-60 md:h-40 flex-shrink-0">
                         <img
                           src={post.imageUrl}
                           alt={post.title}
