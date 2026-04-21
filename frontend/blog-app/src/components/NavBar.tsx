@@ -14,6 +14,12 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Modal, 
+  ModalContent, 
+  ModalHeader, 
+  ModalBody, 
+  ModalFooter,
+  useDisclosure,
 } from '@nextui-org/react';
 import { Plus, LogOut, BookDashed, User } from 'lucide-react';
 
@@ -33,6 +39,7 @@ const NavBar: React.FC<NavBarProps> = ({
 }) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const menuItems = [
     { name: 'Home', path: '/' },
@@ -41,6 +48,7 @@ const NavBar: React.FC<NavBarProps> = ({
   ];
 
   return (
+    <>
     <Navbar
       isBordered
       isMenuOpen={isMenuOpen}
@@ -126,7 +134,7 @@ const NavBar: React.FC<NavBarProps> = ({
                     startContent={<LogOut size={16} />}
                     className="text-danger"
                     color="danger"
-                    onPress={onLogout}
+                    onPress={onOpen}
                   >
                     Log Out
                   </DropdownItem>
@@ -182,6 +190,53 @@ const NavBar: React.FC<NavBarProps> = ({
         )}
       </NavbarMenu>
     </Navbar>
+
+        <Modal 
+      isOpen={isOpen} 
+      onOpenChange={onOpenChange}
+      backdrop="blur"
+      classNames={{
+        base: "bg-[#0B1120] border border-white/10", // Matching your Card theme
+        header: "text-white border-b border-white/5",
+        body: "text-white/70",
+        footer: "border-t border-white/5",
+        closeButton: "hover:bg-white/5 active:bg-white/10",
+      }}
+    >
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">Confirm Logout</ModalHeader>
+            <ModalBody>
+              <p>
+                Are you sure you want to log out? You will need to sign in again to create new posts or manage your drafts.
+              </p>
+            </ModalBody>
+            <ModalFooter>
+              <Button 
+                variant="light" 
+                onPress={onClose}
+                className="text-white/70 hover:text-white"
+              >
+                Cancel
+              </Button>
+              <Button 
+                color="danger" 
+                variant="flat"
+                className="bg-danger/20"
+                onPress={() => {
+                  onLogout();
+                  onClose();
+                }}
+              >
+                Logout
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+    </>
   );
 };
 

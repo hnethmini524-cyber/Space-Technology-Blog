@@ -102,17 +102,18 @@ const EditPostPage: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4">
-      <Card className="w-full">
+      <Card className="w-full bg-[#0B1120] 1px solid #1E293B 0 10px 25px rgba(0, 0, 0, 0.5)">
         <CardHeader className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <Button
               variant="flat"
+              className='bg-[#1E293B] text-white/80'
               startContent={<ArrowLeft size={16} />}
               onClick={handleCancel}
             >
               Back
             </Button>
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-2xl font-bold text-white/80">
               {id ? 'Edit Post' : 'Create New Post'}
             </h1>
           </div>

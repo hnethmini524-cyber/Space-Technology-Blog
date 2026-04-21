@@ -74,9 +74,9 @@ const PostForm: React.FC<PostFormProps> = ({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        heading: false, // Disable default heading to use our custom config
-        bulletList: false, // Disable default list to use our custom config
-        orderedList: false, // Disable default list to use our custom config
+        heading: false, 
+        bulletList: false, 
+        orderedList: false,
       }),
       Image.configure({
         inline: true,
@@ -99,7 +99,7 @@ const PostForm: React.FC<PostFormProps> = ({
     content: initialPost?.content || '',
     editorProps: {
       attributes: {
-        class: 'prose max-w-none focus:outline-none min-h-[400px] px-4 py-2 border rounded-lg bg-white text-gray-900',
+        class: 'prose prose-invert max-w-none focus:outline-none min-h-[400px] px-4 py-2 border border-white/10 rounded-lg bg-[#0b1121] text-white',
       },
     },
   });
@@ -177,17 +177,47 @@ const PostForm: React.FC<PostFormProps> = ({
     editor?.chain().focus().toggleHeading({ level }).run();
   };
 
+  const inputStyles = {
+    label: "text-white/70",
+    input: "text-white",
+    innerWrapper: "bg-transparent",
+    inputWrapper: [
+      "bg-[#0f172a]", 
+      "border-white/10",
+      "group-data-[focus=true]:border-primary",
+      "group-data-[hover=true]:bg-[#1e293b]",
+    ],
+  };
+
+  const selectProps = {
+    variant: "bordered" as const,
+    classNames: inputStyles, // Use the lighter navy styles we created earlier
+    listboxProps: {
+      itemClasses: {
+        base: [
+          "rounded-md",
+          "text-white/80",
+          "transition-opacity",
+          "data-[hover=true]:text-cyan-400",
+          "data-[hover=true]:bg-cyan-400/10",
+        ],
+      },
+    },
+  };
+
   const suggestedTags = availableTags
     .filter(tag => !selectedTags.includes(tag))
     .slice(0, 5);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <Card>
+      <Card className='bg-[#0B1120]'>
         <CardBody className="space-y-4">
           <div className="space-y-2">
             <Input
               label="Title"
+              variant="bordered"
+              classNames={inputStyles}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               isInvalid={!!errors.title}
@@ -197,8 +227,8 @@ const PostForm: React.FC<PostFormProps> = ({
           </div>
 
           <div className="space-y-2">
-            <div className="bg-default-100 p-2 rounded-lg mb-2 flex gap-2 flex-wrap items-center">
-              <Dropdown>
+            <div className="bg-[#1e293b]/50 backdrop-blur-md border border-white/10 p-2 rounded-t-lg flex gap-2 items-center text-white/70">
+              <Dropdown className="bg-[#1e293b]">
                 <DropdownTrigger>
                   <Button
                     variant="flat"
@@ -211,6 +241,7 @@ const PostForm: React.FC<PostFormProps> = ({
                 <DropdownMenu
                   onAction={(key) => handleHeadingSelect(parseInt(key as string) as 1 | 2 | 3)}
                   aria-label="Heading levels"
+                  className="bg-[#1e293b] text-white/80"
                 >
                   <DropdownItem key="1" className={editor?.isActive('heading', { level: 1 }) ? 'bg-default-200' : ''}>
                     Heading 1
@@ -305,6 +336,7 @@ const PostForm: React.FC<PostFormProps> = ({
           <div className="space-y-2">
             <Select
               label="Category"
+              {...selectProps}
               selectedKeys={categoryId ? [categoryId] : []}
               onChange={(e) => setCategoryId(e.target.value)}
               isInvalid={!!errors.category}
@@ -312,7 +344,7 @@ const PostForm: React.FC<PostFormProps> = ({
               isRequired
             >
               {categories.map((cat) => (
-                <SelectItem key={cat.id} value={cat.id}>
+                <SelectItem key={cat.id} value={cat.id} className="text-slate-900">
                   {cat.name}
                 </SelectItem>
               ))}
@@ -322,6 +354,7 @@ const PostForm: React.FC<PostFormProps> = ({
           <div className="space-y-2">
             <Select
               label="Add Tags"
+              {...selectProps}
               selectedKeys={selectedTags.map(tag => tag.id)}>
               <SelectSection>
                 {suggestedTags.map((tag) => (
@@ -352,6 +385,7 @@ const PostForm: React.FC<PostFormProps> = ({
           <div className="space-y-2">
             <Select
               label="Status"
+              {...selectProps}
               selectedKeys={[status]}
               onChange={(e) => setStatus(e.target.value as PostStatus)}
             >

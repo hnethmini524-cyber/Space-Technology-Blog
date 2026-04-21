@@ -292,7 +292,7 @@ const PostPage: React.FC<PostPageProps> = ({
               </Button>
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">{post.title}</h1>
+          <h1 className="post-title text-3xl font-bold text-white tracking-tight">{post.title}</h1>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Avatar
@@ -320,7 +320,7 @@ const PostPage: React.FC<PostPageProps> = ({
             <img src={post.imageUrl} alt={post.title} className="w-full max-h-[450px] object-cover rounded-lg mb-8 border border-white/10 shadow-2xl"/>
           )}
           <div 
-            className="prose prose-lg max-w-none prose-invert prose-headings:text-white text-white/80 prose-strong:text-primary"
+            className="preserve-lines prose prose-lg md:prose-xl max-w-none prose-invert prose-p:leading-relaxed prose-p:my-6" 
             dangerouslySetInnerHTML={createSanitizedHTML(post.content)}
           />
         </CardBody>
@@ -357,9 +357,10 @@ const PostPage: React.FC<PostPageProps> = ({
                     minRows={3}
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
+                    className="space-textarea"
                     classNames={{
-                      input: "text-white/40",
-                      inputWrapper: "border-white/10 px-0",
+                      input: "text-white placeholder:text-white/30 text-base leading-relaxed",
+                      inputWrapper: "border-white/10 px-0 group-data-[focus=true]:border-success",
                     }}
                   />
                   

@@ -156,14 +156,14 @@ const PostList: React.FC<PostListProps> = ({
                   </div>
                   
                   <div className="flex flex-wrap gap-2">
-                    <Chip size="sm" className="bg-primary-100 text-primary">
+                    <Chip size="sm" className="bg-primary-100 text-primary bg-[#1E293B]">
                       {post.category.name}
                     </Chip>
                     {post.tags.map((tag) => (
                     <Chip
                       key={tag.id}
                       size="sm"
-                      className="bg-default-100"
+                      className="bg-default-100 bg-[#1E293B] text-white/60"
                       startContent={<Tag size={14} />}
                     >
                       {tag.name}

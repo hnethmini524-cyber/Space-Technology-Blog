@@ -137,24 +137,27 @@ const TagsPage: React.FC<TagsPageProps> = ({ isAuthenticated }) => {
 
           <Table
             aria-label="Tags table"
-            isHeaderSticky
+            removeWrapper
             classNames={{
-              wrapper: "max-h-[600px]",
+              base: "bg-transparent",
+              table: "bg-transparent",
+              thead: "space-table-header", 
             }}
           >
-            <TableHeader>
+            <TableHeader className="space-table-header">
               <TableColumn>NAME</TableColumn>
               <TableColumn>POST COUNT</TableColumn>
               <TableColumn>ACTIONS</TableColumn>
             </TableHeader>
             <TableBody
               isLoading={loading}
+              className="text-slate-200"
               loadingContent={<div>Loading tags...</div>}
             >
               {tags.map((tag) => (
-                <TableRow key={tag.id}>
-                  <TableCell>{tag.name}</TableCell>
-                  <TableCell>{tag.postCount || 0}</TableCell>
+                <TableRow key={tag.id} className="space-table-row">
+                  <TableCell className="space-table-cell">{tag.name}</TableCell>
+                  <TableCell className="space-table-cell">{tag.postCount || 0}</TableCell>
                   <TableCell>
                     {isAuthenticated ? (
                       <Tooltip
@@ -168,6 +171,7 @@ const TagsPage: React.FC<TagsPageProps> = ({ isAuthenticated }) => {
                           isIconOnly
                           variant="flat"
                           color="danger"
+                          className="btn-action-delete"
                           size="sm"
                           onClick={() => handleDelete(tag)}
                           isDisabled={
@@ -188,13 +192,21 @@ const TagsPage: React.FC<TagsPageProps> = ({ isAuthenticated }) => {
         </CardBody>
       </Card>
 
-      <Modal isOpen={isOpen} onClose={handleModalClose}>
+      <Modal 
+        isOpen={isOpen} 
+        onClose={handleModalClose}
+        classNames={{
+        base: "bg-[#0b1121] border border-white/10 text-white",
+        header: "border-b border-white/5",
+        footer: "border-t border-white/5",}}
+      >
         <ModalContent>
           <ModalHeader>Add Tags</ModalHeader>
           <ModalBody>
             <div className="space-y-4">
               <Input
                 label="Enter tags"
+                className="modal-input"
                 placeholder="Type and press Enter or comma to add tags"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
@@ -204,6 +216,7 @@ const TagsPage: React.FC<TagsPageProps> = ({ isAuthenticated }) => {
                 {newTags.map((tag) => (
                   <Chip
                     key={tag}
+                    className="tag-asteroid"
                     onClose={() => handleRemoveNewTag(tag)}
                     variant="flat"
                     endContent={<X size={14} />}

@@ -144,31 +144,34 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
 
           <Table
             aria-label="Categories table"
-            isHeaderSticky
+            removeWrapper
             classNames={{
-              wrapper: "max-h-[600px]",
+              base: "bg-transparent",
+              table: "bg-transparent",
+              thead: "space-table-header", 
             }}
           >
-            <TableHeader>
+            <TableHeader className="space-table-header">
               <TableColumn>NAME</TableColumn>
               <TableColumn>POST COUNT</TableColumn>
               <TableColumn>ACTIONS</TableColumn>
             </TableHeader>
             <TableBody
               isLoading={loading}
-              className= "text-white/40"
+              className="text-slate-200"
               loadingContent={<div>Loading categories...</div>}
             >
               {categories.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell>{category.name}</TableCell>
-                  <TableCell>{category.postCount || 0}</TableCell>
+                <TableRow key={category.id} className="space-table-row">
+                  <TableCell className="space-table-cell">{category.name}</TableCell>
+                  <TableCell className="space-table-cell">{category.postCount || 0}</TableCell>
                   <TableCell>
                     {isAuthenticated ? (
                       <div className="flex gap-2">
                         <Button
                           isIconOnly
                           variant="flat"
+                          className="btn-action-edit"
                           size="sm"
                           onClick={() => openEditModal(category)}
                         >
@@ -185,6 +188,7 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
                             isIconOnly
                             variant="flat"
                             color="danger"
+                            className="btn-action-delete"
                             size="sm"
                             onClick={() => handleDelete(category)}
                             isDisabled={
@@ -208,7 +212,14 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
         </CardBody>
       </Card>
 
-      <Modal isOpen={isOpen} onClose={handleModalClose}>
+      <Modal 
+        isOpen={isOpen} 
+        onClose={handleModalClose}
+        classNames={{
+        base: "bg-[#0b1121] border border-white/10 text-white",
+        header: "border-b border-white/5",
+        footer: "border-t border-white/5",}}
+      >
         <ModalContent>
           <ModalHeader>
             {editingCategory ? "Edit Category" : "Add Category"}
@@ -216,6 +227,7 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
           <ModalBody>
             <Input
               label="Category Name"
+              className="modal-input"
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}
               isRequired

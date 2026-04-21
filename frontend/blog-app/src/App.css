@@ -185,3 +185,139 @@ html {
 .post-card-space:hover .image-container-space::after {
   @apply translate-y-full;
 }
+
+/* --- Categories page Styles --- */
+
+.space-table-wrapper {
+  @apply bg-transparent shadow-none !important;
+}
+
+.space-table-header th {
+  background-color: rgba(11, 17, 33, 0.9) !important; 
+  @apply text-cyan-400 font-mono tracking-widest border-b border-cyan-500/20 !important;
+  
+  backdrop-filter: blur(4px); 
+  text-shadow: 0 0 8px rgba(34, 211, 238, 0.4);
+  text-transform: uppercase;
+}
+
+.space-table-row {
+  @apply border-b border-white/5 transition-colors !important;
+}
+
+.space-table-row:hover {
+  @apply bg-cyan-500/5 !important;
+}
+
+.space-table-cell {
+  color: #e2e8f0 !important; 
+  @apply py-4 font-medium !important;
+  font-size: 0.875rem;
+  letter-spacing: 0.025em;
+}
+
+.space-table-cell b, 
+.space-table-cell span.important {
+  color: #ffffff !important;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.btn-action-edit {
+  @apply bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/30 !important;
+}
+
+.btn-action-delete {
+  @apply bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500/30 !important;
+}
+
+.modal-input [data-slot="input-wrapper"] {
+  background-color: rgba(11, 17, 33, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.3s ease;
+}
+
+.modal-input input {
+  color: white !important;
+}
+
+.modal-input [data-slot="input-wrapper"]:hover {
+  background-color: rgba(15, 23, 42, 1) !important;
+  border-color: rgba(34, 211, 238, 0.4) !important;
+}
+
+.modal-input[data-focus="true"] [data-slot="input-wrapper"] {
+  border-color: #22d3ee !important;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);
+}
+
+/* Response section*/
+.space-textarea textarea {
+  color: #ffffff !important;
+  caret-color: #22c55e !important;
+}
+
+.space-textarea textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.preserve-lines {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  display: block !important;
+}
+
+.prose p {
+  margin-bottom: 1.5rem !important;
+  line-height: 1.8 !important;
+  color: #94A3B8;
+}
+
+.post-title {
+  color: #E2E8F0 !important;
+}
+.preserve-lines * {
+  white-space: pre-wrap !important;
+}
+
+.prose h1, .prose h2, .prose h3 {
+  margin-top: 2em !important;
+  margin-bottom: 1em !important;
+  color: #F8FAFC !important;
+}
+
+.prose ul, .prose ol {
+  padding-left: 1.5em !important;
+  margin-bottom: 1.5rem !important;
+  list-style-type: decimal;
+}
+
+/* Post form section*/
+
+[data-slot="content"].bg-content1 {
+  background-color: #1e293b !important; 
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-slot="listbox"] [role="option"] {
+  color: rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.2s ease;
+}
+
+[data-slot="listbox"] [role="option"][data-hover="true"],
+[data-slot="listbox"] [role="option"][data-selected="true"] {
+  background-color: rgba(34, 211, 238, 0.15) !important; 
+  color: #22d3ee !important; 
+}
+
+.text-foreground-500 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+[data-slot="listbox-header"] {
+  color: #22d3ee !important;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
