@@ -117,22 +117,29 @@ const NavBar: React.FC<NavBarProps> = ({
                   <Avatar
                     isBordered
                     as="button"
-                    className="transition-transform"
+                    className="transition-transform ring-offset-black ring-2 ring-primary/30"
                     src={userProfile?.avatar}
                     name={userProfile?.name}
                   />
                 </DropdownTrigger>
-                <DropdownMenu aria-label="User menu">                
+                <DropdownMenu 
+                    aria-label="User menu"
+                    variant="flat"
+                    classNames={{
+                        base: "bg-gray-950/90 backdrop-blur-xl border border-white/10 rounded-xl p-1",
+                        list: "gap-1",}}>                
                   <DropdownItem
                     key="profile"
-                    startContent={<User size={16} />}
+                    startContent={<User size={16} className="text-primary" />}
+                    className="data-[hover=true]:bg-white/5 group transition-colors"
+                    textValue="Profile"
                   >
-                    <Link to="/profile" className="w-full block">Profile</Link>
+                    <Link to="/profile" className="w-full block text-white/80 group-hover:text-white">Profile</Link>
                   </DropdownItem>
                   <DropdownItem
                     key="logout"
                     startContent={<LogOut size={16} />}
-                    className="text-danger"
+                    className="text-danger data-[hover=true]:bg-danger/10 transition-colors"
                     color="danger"
                     onPress={onOpen}
                   >
