@@ -48,6 +48,7 @@ export interface Post {
   createdAt: string;
   updatedAt: string;
   status?: PostStatus;
+  clapCount: number;
 }
 
 export interface Comment {
@@ -282,6 +283,12 @@ class ApiService {
 
   public async deleteComment(commentId: string): Promise<void> {
     await this.api.delete(`/comments/${commentId}`);
+  }
+
+  // Inside ApiService class in apiService.ts
+  public async clapPost(postId: string): Promise<number> {
+    const response = await this.api.patch(`/posts/${postId}/clap`); 
+    return response.data.clapCount; 
   }
 
   public async getMyPosts(params: {

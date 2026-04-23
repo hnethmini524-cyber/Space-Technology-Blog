@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -91,6 +92,12 @@ public class PostController {
         List<Post> posts = postService.getPublishedPostsByUser(loggedInUser); 
         List<PostDto> postDtos = posts.stream().map(postMapper::toDto).toList();
         return ResponseEntity.ok(postDtos);
+    }
+    
+    @PatchMapping(path = "/{id}/clap")
+    public ResponseEntity<Map<String, Integer>> clapPost(@PathVariable UUID id) {
+        int newCount = postService.clapPost(id);
+        return ResponseEntity.ok(Map.of("clapCount", newCount));
     }
 
 }

@@ -5,8 +5,14 @@ import com.project.blogApp.domain.entities.Category;
 import com.project.blogApp.domain.entities.Post;
 import com.project.blogApp.domain.entities.Tag;
 import com.project.blogApp.domain.entities.User;
+
+import jakarta.transaction.Transactional;
+
 //import com.project.blogApp.services.PostService;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -22,4 +28,8 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
     List<Post> findAllByStatus(PostStatus status);
     List<Post> findAllByAuthorAndStatus(User author, PostStatus status);
 	Optional<Post> findById(Long postId);
+	@Modifying
+	@Transactional
+	@Query("UPDATE Post p SET p.clapCount = p.clapCount + 1 WHERE p.id = :id")
+	void incrementClapCount(@Param("id") UUID id);
 }

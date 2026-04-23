@@ -26,7 +26,8 @@ import {
   Share,
   MessageCircle, 
   ThumbsUp, 
-  MoreHorizontal
+  MoreHorizontal,
+  Heart 
 } from 'lucide-react';
 import { apiService, Post } from '../services/apiService';
 
@@ -35,7 +36,6 @@ interface PostPageProps {
   currentUserId?: string;
 }
 
-// Basic interface for Comments - replace with your actual API type
 interface Comment {
   id: string;
   content: string;
@@ -56,6 +56,8 @@ const PostPage: React.FC<PostPageProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const [isClapped, setIsClapped] = useState(false);
   
   // Comment specific states
   const [commentText, setCommentText] = useState("");
@@ -172,6 +174,22 @@ const PostPage: React.FC<PostPageProps> = ({
       );
     } catch (err) {
       console.error("Failed to like comment:", err);
+    }
+  };
+
+  const handleClap = async () => {
+    if (!post || !id) return;
+    try {
+      // Optimistic UI update
+      setIsClapped(true);
+      setPost(prev => prev ? { ...prev, clapCount: (prev.clapCount || 0) + 1 } : prev);
+      
+      await apiService.clapPost(id); // Ensure this exists in your apiService
+    } catch (err) {
+      console.error("Failed to clap:", err);
+      // Revert if failed
+      setIsClapped(false);
+      setPost(prev => prev ? { ...prev, clapCount: (prev.clapCount || 0) - 1 } : prev);
     }
   };
 
@@ -326,7 +344,33 @@ const PostPage: React.FC<PostPageProps> = ({
         </CardBody>
 
         <CardFooter className="flex flex-col items-start gap-6 px-0">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="light"
+              radius="full"
+              size="sm"
+              onPress={handleClap}
+              className={`group transition-all ${isClapped ? 'text-primary bg-primary/10' : 'text-white/60 hover:text-white'}`}
+              startContent={
+                <Heart  
+                  size={18} 
+                  className={isClapped ? 'text-primary animate-pulse' : 'text-white/40'} 
+                />
+              }
+            >
+              {post.clapCount?.toLocaleString() || 0}
+            </Button>
+
+            <Button
+              variant="light"
+              radius="full"
+              size="sm"
+              onPress={() => document.getElementById('responses-heading')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-white/60 hover:text-white"
+              startContent={<MessageCircle size={18} className="text-white/40" />}
+            >
+              {comments.length}
+            </Button>
             <Chip color="primary" variant="flat" size="sm" className="border-primary/50 text-white">{post.category.name}</Chip>
             {post.tags.map((tag) => (
               <Chip key={tag.id} variant="dot" size="sm" className="border-white/20 text-white/60" startContent={<Tag size={12} />}>{tag.name}</Chip>

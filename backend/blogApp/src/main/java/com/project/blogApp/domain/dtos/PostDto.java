@@ -26,4 +26,6 @@ public class PostDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private PostStatus status;
+    private Integer clapCount;
+    private Integer responseCount;
 }

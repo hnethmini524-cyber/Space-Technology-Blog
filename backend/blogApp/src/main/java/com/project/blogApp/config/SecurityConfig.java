@@ -93,7 +93,7 @@ public class SecurityConfig {
         // Allow your React frontend
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","http://localhost:5174"));
         // Allow common HTTP methods
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","PATCH", "OPTIONS"));
         // Allow necessary headers
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Cache-Control"));
         // Allow credentials (if you use cookies/sessions later)

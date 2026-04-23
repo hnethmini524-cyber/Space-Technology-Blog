@@ -42,6 +42,8 @@ public class PostMapperImpl implements PostMapper {
                 //.category(post.getCategory() != null ? post.getCategory().getName() : "Uncategorized")
                 .author(post.getAuthor() != null ? AuthorDto.builder() .id(post.getAuthor().getId()) .name(post.getAuthor().getName()).build() : null)
                 .category(categoryMapper.toDto(post.getCategory()))
+                .clapCount(post.getClapCount())
+                .responseCount(post.getComments() != null ? post.getComments().size() : 0)
                 // Mapping the nested Tags
                 .tags(post.getTags() != null ? 
                     post.getTags().stream().map(tagMapper::toTagResponse).collect(Collectors.toSet()) 

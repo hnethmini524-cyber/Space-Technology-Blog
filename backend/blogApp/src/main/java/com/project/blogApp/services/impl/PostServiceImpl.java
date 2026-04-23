@@ -7,6 +7,7 @@ import com.project.blogApp.domain.entities.Category;
 import com.project.blogApp.domain.entities.Post;
 import com.project.blogApp.domain.entities.Tag;
 import com.project.blogApp.domain.entities.User;
+import com.project.blogApp.exception.ResourceNotFoundException;
 import com.project.blogApp.repositories.PostRepository;
 import com.project.blogApp.services.CategoryService;
 import com.project.blogApp.services.PostService;
@@ -152,6 +153,17 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getPublishedPostsByUser(User user) {
         return postRepository.findAllByAuthorAndStatus(user, PostStatus.PUBLISHED);
+    }
+    
+    @Override
+    public int clapPost(UUID id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
+        
+        post.setClapCount(post.getClapCount() + 1);
+        postRepository.save(post);
+        
+        return post.getClapCount(); 
     }
 
 }

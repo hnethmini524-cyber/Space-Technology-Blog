@@ -54,6 +54,10 @@ public class Post {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+    
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer clapCount = 0;
 
     @ManyToMany
     @JoinTable(
