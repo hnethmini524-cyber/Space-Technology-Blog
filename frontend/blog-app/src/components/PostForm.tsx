@@ -178,7 +178,7 @@ const PostForm: React.FC<PostFormProps> = ({
   };
 
   const inputStyles = {
-    label: "text-white/70",
+    label: "text-slate-50",
     input: "text-white",
     innerWrapper: "bg-transparent",
     inputWrapper: [
@@ -210,6 +210,8 @@ const PostForm: React.FC<PostFormProps> = ({
     .slice(0, 5);
 
   return (
+    <>
+    <div className="starfield" />
     <form onSubmit={handleSubmit} className="space-y-6">
       <Card className='bg-[#0B1120]'>
         <CardBody className="space-y-4">
@@ -232,6 +234,7 @@ const PostForm: React.FC<PostFormProps> = ({
                 <DropdownTrigger>
                   <Button
                     variant="flat"
+                    className='toolbar-btn'
                     size="sm"
                     endContent={<ChevronDown size={16} />}
                   >
@@ -260,7 +263,7 @@ const PostForm: React.FC<PostFormProps> = ({
                 isIconOnly
                 variant="flat"
                 onClick={() => editor?.chain().focus().toggleBold().run()}
-                className={editor?.isActive('bold') ? 'bg-default-200' : ''}
+                className={editor?.isActive('bold') ? 'toolbar-btn toolbar-btn-active' : 'toolbar-btn'}
               >
                 <Bold size={16} />
               </Button>
@@ -269,7 +272,7 @@ const PostForm: React.FC<PostFormProps> = ({
                 isIconOnly
                 variant="flat"
                 onClick={() => editor?.chain().focus().toggleItalic().run()}
-                className={editor?.isActive('italic') ? 'bg-default-200' : ''}
+                className={editor?.isActive('italic') ? 'toolbar-btn toolbar-btn-active' : 'toolbar-btn'}
               >
                 <Italic size={16} />
               </Button>
@@ -281,7 +284,7 @@ const PostForm: React.FC<PostFormProps> = ({
                 isIconOnly
                 variant="flat"
                 onClick={() => editor?.chain().focus().toggleBulletList().run()}
-                className={editor?.isActive('bulletList') ? 'bg-default-200' : ''}
+                className={editor?.isActive('bulletList') ? 'toolbar-btn toolbar-btn-active' : 'toolbar-btn'}
               >
                 <List size={16} />
               </Button>
@@ -290,7 +293,7 @@ const PostForm: React.FC<PostFormProps> = ({
                 isIconOnly
                 variant="flat"
                 onClick={() => editor?.chain().focus().toggleOrderedList().run()}
-                className={editor?.isActive('orderedList') ? 'bg-default-200' : ''}
+                className={editor?.isActive('orderedList') ? 'toolbar-btn toolbar-btn-active' : 'toolbar-btn'}
               >
                 <ListOrdered size={16} />
               </Button>
@@ -302,7 +305,8 @@ const PostForm: React.FC<PostFormProps> = ({
                 isIconOnly
                 variant="flat"
                 onClick={() => editor?.chain().focus().undo().run()}
-                isDisabled={!editor?.can().undo()}
+                //isDisabled={!editor?.can().undo()}
+                className={editor?.isActive('undo') ? 'toolbar-btn toolbar-btn-active' : 'toolbar-btn'}
               >
                 <Undo size={16} />
               </Button>
@@ -311,7 +315,8 @@ const PostForm: React.FC<PostFormProps> = ({
                 isIconOnly
                 variant="flat"
                 onClick={() => editor?.chain().focus().redo().run()}
-                isDisabled={!editor?.can().redo()}
+                //isDisabled={!editor?.can().redo()}
+                className={editor?.isActive('redo') ? 'toolbar-btn toolbar-btn-active' : 'toolbar-btn'}
               >
                 <Redo size={16} />
               </Button>
@@ -319,7 +324,7 @@ const PostForm: React.FC<PostFormProps> = ({
             <div className="flex items-center gap-2 mb-2">
               <label className="cursor-pointer"><input type="file" ref={fileInputRef} accept="image/*" hidden onChange={(e) => {
                 if (e.target.files?.[0]) {handleImageUpload(e.target.files[0]);}}} />
-                <Button isIconOnly size="sm" variant="flat" isLoading={uploading} onClick={() => fileInputRef.current?.click()}>
+                <Button isIconOnly size="sm" variant="flat" isLoading={uploading} onClick={() => fileInputRef.current?.click()} className='toolbar-btn toolbar-btn-active:toolbar-btn'>
                   <ImagePlus size={16} />
                 </Button>
               </label>
@@ -400,7 +405,7 @@ const PostForm: React.FC<PostFormProps> = ({
 
           <div className="flex justify-end gap-2 pt-4">
             <Button
-              color="danger"
+              className='btn-cancel'
               variant="flat"
               onClick={onCancel}
               disabled={isSubmitting}
@@ -408,7 +413,7 @@ const PostForm: React.FC<PostFormProps> = ({
               Cancel
             </Button>
             <Button
-              color="primary"
+              className="btn-primary"
               type="submit"
               isLoading={isSubmitting}
             >
@@ -418,7 +423,9 @@ const PostForm: React.FC<PostFormProps> = ({
         </CardBody>
       </Card>
     </form>
+    </>
   );
+  
 };
 
 export default PostForm;

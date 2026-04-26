@@ -156,7 +156,7 @@ const PostList: React.FC<PostListProps> = ({
                   </div>
                   
                   <div className="flex flex-wrap gap-2">
-                    <Chip size="sm" className="bg-primary-100 text-primary bg-[#1E293B]">
+                    <Chip size="sm" className="btn-category">
                       {post.category.name}
                     </Chip>
                     {post.tags.map((tag) => (
@@ -174,7 +174,7 @@ const PostList: React.FC<PostListProps> = ({
             ))}
           </div>
 
-          {/* {posts && posts.totalPages > 1 && (
+          {/* {posts && posts.totalPages > 1 && ( bg-primary-100 text-primary bg-[#1E293B]
             <div className="flex justify-center mt-6">
               <Pagination
                 total={posts.totalPages}

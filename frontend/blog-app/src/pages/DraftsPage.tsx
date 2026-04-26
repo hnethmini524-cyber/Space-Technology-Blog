@@ -47,7 +47,7 @@ const DraftsPage: React.FC = () => {
             as={Link}
             to="/posts/new"
             color="primary"
-            className= "bg-[#a855f7]"
+            className= "btn-primary"
             startContent={<Plus size={16} />}
           >
             New Post
@@ -77,9 +77,8 @@ const DraftsPage: React.FC = () => {
               <Button
                 as={Link}
                 to="/posts/new"
-                color="primary"
                 variant="flat"
-                className="mt-4 bg-[#a855f7]"
+                className="btn-primary"
               >
                 Create Your First Post
               </Button>

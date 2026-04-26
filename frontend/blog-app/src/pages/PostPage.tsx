@@ -280,7 +280,7 @@ const PostPage: React.FC<PostPageProps> = ({
                     to={`/posts/${post.id}/edit`}
                     color="primary"
                     variant="flat"
-                    className="bg-blue-500/20 text-blue-400"
+                    className="btn-cancel"
                     startContent={<Edit size={16} />}
                     size="sm"
                   >
@@ -310,7 +310,7 @@ const PostPage: React.FC<PostPageProps> = ({
               </Button>
             </div>
           </div>
-          <h1 className="post-title text-3xl font-bold text-white tracking-tight">{post.title}</h1>
+          <h1 className="post-title text-3xl font-bold text-slate-50 tracking-tight">{post.title}</h1>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Avatar
@@ -338,7 +338,7 @@ const PostPage: React.FC<PostPageProps> = ({
             <img src={post.imageUrl} alt={post.title} className="w-full max-h-[450px] object-cover rounded-lg mb-8 border border-white/10 shadow-2xl"/>
           )}
           <div 
-            className="preserve-lines prose prose-lg md:prose-xl max-w-none prose-invert prose-p:leading-relaxed prose-p:my-6" 
+            className="preserve-lines prose prose-lg md:prose-xl max-w-none prose-invert prose-p:leading-relaxed prose-p:my-6 text-gray-300" 
             dangerouslySetInnerHTML={createSanitizedHTML(post.content)}
           />
         </CardBody>
@@ -371,7 +371,7 @@ const PostPage: React.FC<PostPageProps> = ({
             >
               {comments.length}
             </Button>
-            <Chip color="primary" variant="flat" size="sm" className="border-primary/50 text-white">{post.category.name}</Chip>
+            <Chip color="primary" variant="flat" size="sm" className="btn-category">{post.category.name}</Chip>
             {post.tags.map((tag) => (
               <Chip key={tag.id} variant="dot" size="sm" className="border-white/20 text-white/60" startContent={<Tag size={12} />}>{tag.name}</Chip>
             ))}
@@ -413,17 +413,16 @@ const PostPage: React.FC<PostPageProps> = ({
                       variant="light"
                       radius="full"
                       size="sm"
-                      className="text-white/50"
+                      className="btn-cancel"
                       onClick={() => setCommentText("")}
                     >
                      Cancel
                     </Button>
                     <Button
-                      color="success"
                       radius="full"
                       size="sm"
-                      className="px-8 text-white font-bold bg-success/80 shadow-lg shadow-success/20"
-                      isDisabled={!commentText.trim()}
+                      className="btn-primary"
+                      //isDisabled={!commentText.trim()}
                       isLoading={isSubmitting}
                       onClick={handleCommentSubmit}
                     >
@@ -441,10 +440,9 @@ const PostPage: React.FC<PostPageProps> = ({
                   <Button 
                     as={Link} 
                     to="/login" 
-                    color="primary" 
                     variant="solid" 
                     radius="full"
-                    className="px-8"
+                    className="btn-primary"
                   >
                     Log in to respond
                   </Button>

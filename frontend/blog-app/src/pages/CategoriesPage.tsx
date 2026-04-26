@@ -120,13 +120,13 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
 
   return (
     <div className="max-w-4xl mx-auto px-4">
+      <div className="starfield" />
       <Card className="bg-[#0b1121]/50 border border-purple-500/50 shadow-[0_0_20px_rgba(168,85,247,0.4)] backdrop-blur-md rounded-2xl p-6">
         <CardHeader className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-white/40">Categories</h1>
           {isAuthenticated && (
             <Button
-              color="primary"
-              className= "bg-[#a855f7]"
+              className= "btn-primary"
               startContent={<Plus size={16} />}
               onClick={openAddModal}
             >
@@ -234,11 +234,11 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="flat" onClick={handleModalClose}>
+            <Button variant="flat" onClick={handleModalClose} className="btn-cancel">
               Cancel
             </Button>
             <Button
-              color="primary"
+              className="btn-primary"
               onClick={handleAddEdit}
               isLoading={isSubmitting}
             >

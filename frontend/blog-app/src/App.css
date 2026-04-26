@@ -2,27 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow-y: scroll; 
+  height: 100%;
+}
 
-html, body, #root {
-  /* Change 'height' to 'min-height' */
-  min-height: 100vh; 
+body {
   margin: 0;
   padding: 0;
+  min-height: 100%;
   background-color: #030617;
-  /* Ensure the background color covers the entire scrollable area */
-  background-attachment: fixed; 
 }
 
 #root {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  position: relative;
 }
 
 .ProseMirror {
@@ -106,8 +100,44 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-/* --- Space Tech Navigation Styles --- */
+/* --- main button colors Styles --- */
+.btn-primary {
+  @apply text-white;
+  background: #9614d0;
+  box-shadow: 0 0 18px rgba(150,20,208,.35);
+}
 
+.btn-primary:hover {
+  background: #bb44f0;
+  box-shadow: 0 0 22px rgba(187,68,240,.45);
+}
+
+.btn-cancel {
+  @apply text-slate-400;
+  background-color: #1E293B;
+  border:1px solid #374151;
+}
+
+.btn-cancel:hover {
+  @apply text-white;
+  background-color: #1F2937;
+}
+
+.btn-action-edit {
+  @apply bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/30 !important;
+}
+
+.btn-action-delete {
+  @apply bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500/30 !important;
+}
+
+.btn-category {
+  @apply text-fuchsia-400;
+  background: rgba(150,20,208,.12);
+  border: rgba(209,106,255,.35);
+}
+
+/* --- Space Tech Navigation Styles --- */
 .nav-link-plasma {
   @apply text-slate-400 transition-all duration-300 font-medium;
 }
@@ -161,14 +191,14 @@ html {
   box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
 }
 
-/* Post Card Glassmorphism */
+/* Post Card Glassmorphism border-cyan-500/30*/
 .post-card-space {
   @apply bg-[#0b1121]/40 border border-white/5 transition-all duration-500;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px); 
 }
 
 .post-card-space:hover {
-  @apply border-cyan-500/30 -translate-y-1;
+  @apply border-purple-500/50 -translate-y-1;
   background: rgba(34, 211, 238, 0.03);
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(34, 211, 238, 0.1);
 }
@@ -179,7 +209,7 @@ html {
 
 .image-container-space::after {
   content: "";
-  @apply absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent -translate-y-full transition-transform duration-[2000ms];
+  @apply absolute inset-0 bg-gradient-to-b from-transparent via-purple-400/10 to-transparent -translate-y-full transition-transform duration-[2000ms];
 }
 
 .post-card-space:hover .image-container-space::after {
@@ -194,7 +224,7 @@ html {
 
 .space-table-header th {
   background-color: rgba(11, 17, 33, 0.9) !important; 
-  @apply text-cyan-400 font-mono tracking-widest border-b border-cyan-500/20 !important;
+  @apply text-gray-200 font-mono tracking-widest border-b border-cyan-500/20 !important;
   
   backdrop-filter: blur(4px); 
   text-shadow: 0 0 8px rgba(34, 211, 238, 0.4);
@@ -222,14 +252,6 @@ html {
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
 }
 
-.btn-action-edit {
-  @apply bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/30 !important;
-}
-
-.btn-action-delete {
-  @apply bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500/30 !important;
-}
-
 .modal-input [data-slot="input-wrapper"] {
   background-color: rgba(11, 17, 33, 0.9) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -253,7 +275,7 @@ html {
 /* Response section*/
 .space-textarea textarea {
   color: #ffffff !important;
-  caret-color: #22c55e !important;
+  caret-color: #22d3ee !important;
 }
 
 .space-textarea textarea::placeholder {
@@ -269,7 +291,7 @@ html {
 .prose p {
   margin-bottom: 1.5rem !important;
   line-height: 1.8 !important;
-  color: #94A3B8;
+  
 }
 
 .post-title {
@@ -292,6 +314,25 @@ html {
 }
 
 /* Post form section*/
+
+.toolbar-btn{
+  @apply text-slate-300 transition-all duration-200;
+  background: #1E293B;
+  border: 1px solid #374151;
+}
+
+.toolbar-btn:hover {
+  border-color: rgba(34, 211, 238, 0.5);
+  color: #22d3ee;
+  background: rgba(34, 211, 238, 0.05);
+}
+
+.toolbar-btn-active {
+  background: rgba(34, 211, 238, 0.15) !important;
+  border-color: #22d3ee !important;
+  color: #22d3ee !important;
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+}
 
 [data-slot="content"].bg-content1 {
   background-color: #1e293b !important; 
@@ -320,4 +361,46 @@ html {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+/* small stars */
+.starfield {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0; 
+  
+  background: 
+    radial-gradient(circle at 18% 20%, rgba(150,20,208,.12), transparent 35%),
+    radial-gradient(circle at 82% 18%, rgba(34,211,238,.07), transparent 28%),
+    linear-gradient(to bottom, #020512, #030617);
+}
+
+.starfield::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  box-shadow:
+    10vw 10vh #fff, 25vw 30vh #fff, 45vw 20vh #d16aff, 70vw 35vh #fff,
+    90vw 15vh #22D3EE, 15vw 60vh #fff, 40vw 75vh #fff, 65vw 65vh #d16aff,
+    85vw 80vh #fff, 95vw 50vh #fff, 20vw 90vh #22D3EE, 55vw 95vh #fff,
+    80vw 85vh #fff, 92vw 92vh #d16aff;
+  opacity: .8;
+}
+
+.starfield::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle at center, rgba(255,255,255,.65) 0.5px, transparent 1px);
+  background-size: 90px 90px;
+  opacity: .35;
 }

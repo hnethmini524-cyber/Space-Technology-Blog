@@ -74,7 +74,6 @@ export interface UpdatePostRequest extends CreatePostRequest {
   id: string;
 }
 
-
 export interface ApiError {
   status: number;
   message: string;
@@ -316,6 +315,7 @@ class ApiService {
     );
     return response.data;
   }
+
 }
 
 // Export a singleton instance

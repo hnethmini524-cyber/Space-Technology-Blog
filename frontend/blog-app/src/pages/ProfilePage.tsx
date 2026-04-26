@@ -10,7 +10,7 @@ import {
   Spinner,
   Button,
 } from '@nextui-org/react';
-import { User, Mail, CalendarDays } from 'lucide-react';
+import { User, Mail, CalendarDays, UserRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { apiService, Post, PostStatus } from '../services/apiService';
 import PostList from '../components/PostList';
@@ -59,6 +59,7 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-[#030617] text-white overflow-y-auto px-4 py-10">
+      <div className="starfield" />
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10">
         
         {/* === Left Side: Content Tabs === */}
@@ -123,7 +124,7 @@ const ProfilePage = () => {
                                 to="/posts/new"
                                 color="primary"
                                 variant="flat"
-                                className="mt-4 bg-[#a855f7]"
+                                className="btn-primary"
                               >
                                 Create Your First Post
                               </Button>
@@ -138,16 +139,20 @@ const ProfilePage = () => {
         <div className="hidden md:block w-px border-l border-white/10 shrink-0 self-stretch" />
 
         {/* === Right Side: User Details === */}
-        <div className="w-full md:w-80 shrink-0">
+        <div className="w-full md:w-64 shrink-0">
           <Card className="bg-transparent shadow-none border-none sticky top-10">
             <CardBody className="flex flex-col items-center p-0">
               <Avatar 
-                name={userName} 
-                className="w-40 h-40 text-large bg-black/30 border-4 border-white/10 shadow-2xl" 
+                showFallback
+                src={undefined} // Force fallback if no image exists
+                fallback={
+                  <UserRound size={80} className="text-white/60" /> 
+                }
+                className="w-40 h-40 text-large bg-space-800 border-4 border-starlight shadow-[0_0_20px_rgba(34,211,238,0.3)]" 
                 radius="full"
               />
               
-              <h2 className="text-2xl font-bold mt-6 text-center">{userName}</h2>
+              <h2 className="text-2xl font-bold mt-6 text-center text-white/80">{userName}</h2>
 
               <div className="w-full text-left space-y-5 mt-10">
                 <div className="space-y-1">

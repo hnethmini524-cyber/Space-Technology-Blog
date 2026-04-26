@@ -113,13 +113,14 @@ const TagsPage: React.FC<TagsPageProps> = ({ isAuthenticated }) => {
 
   return (
     <div className="max-w-4xl mx-auto px-4">
+      <div className="starfield" />
       <Card className="bg-[#0b1121]/50 border border-purple-500/50 shadow-[0_0_20px_rgba(168,85,247,0.4)] backdrop-blur-md rounded-2xl p-6">
         <CardHeader className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-white/40">Tags</h1>
           {isAuthenticated && (
             <Button
               color="primary"
-              className= "bg-[#a855f7]"
+              className= "btn-primary"
               startContent={<Plus size={16} />}
               onClick={onOpen}
             >
@@ -228,14 +229,14 @@ const TagsPage: React.FC<TagsPageProps> = ({ isAuthenticated }) => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="flat" onClick={handleModalClose}>
+            <Button variant="flat" onClick={handleModalClose} className="btn-cancel">
               Cancel
             </Button>
             <Button
-              color="primary"
+              className="btn-primary"
               onClick={handleAddTags}
               isLoading={isSubmitting}
-              isDisabled={newTags.length === 0}
+              //isDisabled={newTags.length === 0}
             >
               Add Tags
             </Button>

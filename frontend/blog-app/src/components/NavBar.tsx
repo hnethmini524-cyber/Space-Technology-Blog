@@ -21,7 +21,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from '@nextui-org/react';
-import { Plus, LogOut, BookDashed, User } from 'lucide-react';
+import { Plus, LogOut, User } from 'lucide-react';
 
 interface NavBarProps {
   isAuthenticated: boolean;
@@ -87,18 +87,6 @@ const NavBar: React.FC<NavBarProps> = ({
       <NavbarContent justify="end">
         {isAuthenticated ? (
           <>
-            <NavbarItem className="hidden md:flex">
-              <Button
-                as={Link}
-                to="/posts/drafts"
-                color="secondary"
-                className="btn-nebula"
-                variant="flat"
-                startContent={<BookDashed size={16} />}
-              >
-                Draft Posts
-              </Button>
-            </NavbarItem>
             <NavbarItem>
               <Button
                 as={Link}
@@ -152,12 +140,12 @@ const NavBar: React.FC<NavBarProps> = ({
         ) : (
           <div className="flex items-center gap-2">
             <NavbarItem>
-              <Button as={Link} to="/login" variant="light" className="text-default-600">
+              <Button as={Link} to="/login" variant="light" className="btn-cancel">
                 Log In
               </Button>
             </NavbarItem>
             <NavbarItem>
-              <Button as={Link} to="/register" color="primary" variant="flat">
+              <Button as={Link} to="/register" color="primary" variant="flat" className="btn-primary">
                 Sign Up
               </Button>
             </NavbarItem>
@@ -189,7 +177,7 @@ const NavBar: React.FC<NavBarProps> = ({
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <Link to="/register" className="w-full text-primary" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/register" className="btn-primary" onClick={() => setIsMenuOpen(false)}>
                 Sign Up
               </Link>
             </NavbarMenuItem>

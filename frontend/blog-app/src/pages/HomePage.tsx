@@ -56,7 +56,8 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#030617] text-white">
+    <div className="min-h-screen w-full text-white ">
+      <div className="starfield" />
       <div className="max-w-6xl mx-auto px-4 py-10 space-y-6">
         <Card className="space-card mb-6 px-2">
           <CardHeader>
