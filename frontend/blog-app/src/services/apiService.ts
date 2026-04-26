@@ -88,6 +88,19 @@ export enum PostStatus {
   PUBLISHED = 'PUBLISHED'
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  password?: string; // Optional if you handle confirmation logic in-service or component
+}
+
+export interface MessageResponse {
+  message: string;
+}
+
 class ApiService {
   private api: AxiosInstance;
   private static instance: ApiService;
@@ -182,6 +195,16 @@ class ApiService {
         localStorage.setItem('userEmail', response.data.email);
     }
 
+    return response.data;
+  }
+
+  public async requestPasswordReset(email: string): Promise<MessageResponse> {
+    const response: AxiosResponse<MessageResponse> = await this.api.post('/auth/forgot-password', { email });
+    return response.data;
+  }
+
+  public async resetPassword(data: ResetPasswordRequest): Promise<MessageResponse> {
+    const response: AxiosResponse<MessageResponse> = await this.api.post('/auth/reset-password', data);
     return response.data;
   }
 

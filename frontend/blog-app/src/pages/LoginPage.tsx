@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 //import { apiService } from '../services/apiService';
 import { useAuth } from '../components/AuthContext';
+import ForgotPasswordRequest from '../components/ForgotPasswordRequest';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -25,6 +27,15 @@ const LoginPage = () => {
       setIsLoading(false);
     }
   };
+
+  // If the user clicked "Forgot Password", show that component instead
+  if (showForgot) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#030617] p-4">
+        <ForgotPasswordRequest onBack={() => setShowForgot(false)} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#030617]">
@@ -69,6 +80,15 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
               />
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowForgot(true)}
+                  className="text-xs font-medium text-purple-400 hover:text-purple-300 transition-colors"
+                >
+                  Forgot your password?
+                </button>
+              </div>
             </div>
           </div>
 
