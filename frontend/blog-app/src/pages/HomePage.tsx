@@ -10,7 +10,7 @@ import { apiService, Post, Category, Tag } from '../services/apiService';
 import PostList from '../components/PostList';
 
 const HomePage: React.FC = () => {
-  const [posts, setPosts] = useState<Post[] | null>(null);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
@@ -102,7 +102,7 @@ const HomePage: React.FC = () => {
             </div>
           </CardBody>
         </Card>
-
+      {loading ? (
         <PostList
           posts={posts}
           loading={loading}
@@ -112,6 +112,40 @@ const HomePage: React.FC = () => {
           onPageChange={setPage}
           onSortChange={setSortBy}
         />
+      ) : posts.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+          <div className="relative">
+            <div className="absolute inset-0 blur-3xl bg-primary/20 rounded-full" />
+            <span className="text-8xl">🚀</span>
+          </div>
+          <div className="space-y-2 relative">
+            <h3 className="text-2xl font-semibold text-white">This sector is empty</h3>
+            <p className="text-slate-400 max-w-md mx-auto">
+              We couldn't find any posts in this category. 
+              Try exploring a different orbit or check back later!
+            </p>
+            <button 
+              //variant="flat" 
+              color="primary" 
+              onClick={() => handleCategoryChange('all')}
+              className="mt-4"
+            >
+              Return to Home Base
+            </button>
+          </div>
+        </div>
+      ) : (
+        /* Normal PostList display */
+        <PostList
+          posts={posts}
+          loading={loading}
+          error={error}
+          page={page}
+          sortBy={sortBy}
+          onPageChange={setPage}
+          onSortChange={setSortBy}
+        />
+      )}
       </div>
     </div>
   );

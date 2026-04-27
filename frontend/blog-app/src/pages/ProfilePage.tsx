@@ -15,10 +15,37 @@ import { Link } from 'react-router-dom';
 import { apiService, Post, PostStatus } from '../services/apiService';
 import PostList from '../components/PostList';
 
+//function for handle empty state
+const EmptyState = ({ type }: { type: 'posts' | 'drafts' }) => (
+  <div className="flex flex-col items-center justify-center py-16 text-center space-y-4">
+    <div className="relative">
+      <div className="absolute inset-0 blur-3xl bg-primary/10 rounded-full" />
+      <span className="text-7xl">{type === 'posts' ? '📡' : '📝'}</span>
+    </div>
+    <div className="relative z-10 space-y-2">
+      <h3 className="text-2xl font-bold text-white tracking-tight">
+        {type === 'posts' ? "No transmissions found" : "Your drafting table is clear"}
+      </h3>
+      <p className="text-slate-400 max-w-sm mx-auto leading-relaxed">
+        {type === 'posts' 
+          ? "You haven't published any space logs yet. Ready to share your discovery?" 
+          : "Start a new log and save it as a draft to see it in your orbit."}
+      </p>
+      <Button 
+        as={Link} 
+        to="/posts/new" 
+        className="mt-4 px-6 bg-primary/20 border border-primary/50 text-cyan-400 rounded-full hover:bg-primary/40"
+      >
+        Create New Post
+      </Button>
+    </div>
+  </div>
+);
+
 const ProfilePage = () => {
   // 1. States for Data
-  const [publishedPosts, setPublishedPosts] = useState<Post[] | null>(null);
-  const [drafts, setDrafts] = useState<Post[] | null>(null);
+  const [publishedPosts, setPublishedPosts] = useState<Post[]>([]);
+  const [drafts, setDrafts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
@@ -84,15 +111,18 @@ const ProfilePage = () => {
               </div>
             }>
               <div className="mt-8">
-                <PostList 
-                  posts={publishedPosts} 
-                  loading={loading} 
-                  error={error}
-                  page={page}
-                  sortBy={sortBy}
-                  onPageChange={setPage}
-                  onSortChange={setSortBy}
-                />
+                {!loading && publishedPosts.length === 0 ? (
+                  <EmptyState type="posts" />) : (
+                    <PostList 
+                      posts={publishedPosts} 
+                      loading={loading} 
+                      error={error}
+                      page={page}
+                      sortBy={sortBy}
+                      onPageChange={setPage}
+                      onSortChange={setSortBy}
+                    />
+                  )}
               </div>
             </Tab>
 
@@ -106,30 +136,18 @@ const ProfilePage = () => {
               </div>
             }>
               <div className="mt-8">
-                <PostList 
-                  posts={drafts} 
-                  loading={loading}
-                  error={error}
-                  page={page}
-                  sortBy={sortBy}
-                  onPageChange={setPage}
-                  onSortChange={setSortBy}
-                />
-
-                {drafts?.length === 0 && !loading && (
-                            <div className="text-center py-8 text-default-500">
-                              <p>You don't have any draft posts yet.</p>
-                              <Button
-                                as={Link}
-                                to="/posts/new"
-                                color="primary"
-                                variant="flat"
-                                className="btn-primary"
-                              >
-                                Create Your First Post
-                              </Button>
-                            </div>
-                          )}
+                {!loading && drafts.length === 0 ? (
+                  <EmptyState type="drafts" />) : (
+                    <PostList 
+                      posts={drafts} 
+                      loading={loading}
+                      error={error}
+                      page={page}
+                      sortBy={sortBy}
+                      onPageChange={setPage}
+                      onSortChange={setSortBy}
+                    />
+                  )}
               </div>
             </Tab>
           </Tabs>

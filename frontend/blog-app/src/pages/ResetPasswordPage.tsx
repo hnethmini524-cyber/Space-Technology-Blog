@@ -55,6 +55,7 @@ const ResetPasswordPage = () => {
               <Input
                 type="password"
                 label="New Password"
+                className="text-white/60"
                 variant="bordered"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -64,6 +65,7 @@ const ResetPasswordPage = () => {
               <Input
                 type="password"
                 label="Confirm Password"
+                className="text-white/60"
                 variant="bordered"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
