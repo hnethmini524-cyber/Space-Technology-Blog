@@ -1,6 +1,6 @@
 package com.project.blogApp.config;
 
-import com.project.blogApp.domain.entities.User;
+//import com.project.blogApp.domain.entities.User;
 import com.project.blogApp.repositories.UserRepository;
 import com.project.blogApp.security.BlogUserDetailsService;
 import com.project.blogApp.security.JwtAuthenticationFilter;
@@ -34,19 +34,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
-        BlogUserDetailsService blogUserDetailsService = new BlogUserDetailsService(userRepository);
-
-        String email = "user@test.com";
-        userRepository.findByEmail(email).orElseGet(() -> {
-            User newUser = User.builder()
-                    .name("Test User")
-                    .email(email)
-                    .password(passwordEncoder().encode("password"))
-                    .build();
-            return userRepository.save(newUser);
-        });
-
-        return blogUserDetailsService;
+        return new BlogUserDetailsService(userRepository);
     }
 
     @Bean

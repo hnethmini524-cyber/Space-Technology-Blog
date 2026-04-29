@@ -1,5 +1,6 @@
 package com.project.blogApp.services.impl;
 
+import com.project.blogApp.domain.dtos.CategoryDto;
 import com.project.blogApp.domain.entities.Category;
 import com.project.blogApp.repositories.CategoryRepository;
 import com.project.blogApp.services.CategoryService;
@@ -19,8 +20,16 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> listCategories() {
-        return categoryRepository.findAllWithPostCount();
+    public List<CategoryDto> listCategories() {
+        List<Object[]> results = categoryRepository.findAllWithPostCountSummary();
+        
+        return results.stream().map(result -> 
+            CategoryDto.builder()
+                .id((UUID) result[0])       // ID from query
+                .name((String) result[1])    // Name from query
+                .postCount((Long) result[2]) // Count from query
+                .build()
+        ).toList();
     }
 
     @Override

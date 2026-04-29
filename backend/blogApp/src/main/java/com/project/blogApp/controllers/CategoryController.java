@@ -23,11 +23,8 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryDto>> listCategories() {
-        List<CategoryDto> categories = categoryService.listCategories()
-                .stream().map(categoryMapper::toDto)
-                .toList();
-
-        return ResponseEntity.ok(categories);
+        // No stream/map needed because the service already returns CategoryDto
+        return ResponseEntity.ok(categoryService.listCategories());
     }
 
     @PostMapping
