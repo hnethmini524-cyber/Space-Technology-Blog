@@ -12,22 +12,16 @@ This project is being developed as a Community-Driven Space Technology Blog to:
 ✔ Encourage discussions and knowledge sharing <br>
 ✔ Provide a platform for Sri Lankan space enthusiasts
 
+## ✨ Completed Features
 
-## 🔧 Current Status
-
-✔ Initial codebase cloned and environment issues resolved. <br>
-✔ Cleaned up legacy configurations and other issues. <br>
-✔ Established baseline React + Spring Boot connectivity. <br>
-✔ New features under development.
-
-
-## ✨ Planned Features to Add
-
-✔ User Identity: Implementing JWT-based Registration <br>
-✔ Engagement: Developing a Comment System for community discussions. <br>
+✔ User Identity: Implementing JWT-based Registration. <br>
+✔ Add forgot password feature: Users can reset their password. <br>
+✔ Engagement: Developing a Comment/like System for community discussions. <br>
 ✔ UI/UX: Complete overhaul to a space-tech themed interface. <br>
 ✔ Image Uploading: Users can upload space-related images for posts. <br>
 ✔ User Mentions: Implement @mention functionality to tag users in posts & comments. <br>
+✔ Adding heart count and response count: Users can put hearts in the posts. <br>
+✔ Add profile page: Include posts and drafts of the authenticated user. <br>
 
 ## 🛠 Tech Stack
 
@@ -36,6 +30,7 @@ This project is being developed as a Community-Driven Space Technology Blog to:
 * Database: MySQL <br>
 * Security: Spring Security / JWT Authentication <br>
 * Media Storage: Cloudinary <br>
+* Email service: Mailtrap <br>
 
 ---
 
