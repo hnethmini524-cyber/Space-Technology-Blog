@@ -164,14 +164,9 @@ const PostPage: React.FC<PostPageProps> = ({
     try {
       const updatedLikes = await apiService.likeComment(commentId);
     
-      // Update the local state to show the new count
-      setComments(prevComments => 
-      prevComments.map(comment => 
-        comment.id === commentId 
-          ? { ...comment, likes: updatedLikes } 
-          : comment
-        )
-      );
+      setComments(prev => prev.map(c => 
+        c.id === commentId ? { ...c, likes: c.likes + 1 } : c
+    ));
     } catch (err) {
       console.error("Failed to like comment:", err);
     }

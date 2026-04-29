@@ -19,7 +19,7 @@ import {
   ModalFooter,
   Tooltip,
 } from "@nextui-org/react";
-import { Plus, Edit2, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { apiService, Category } from "../services/apiService";
 
 interface CategoriesPageProps {
@@ -30,7 +30,6 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -52,29 +51,16 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
     }
   };
 
-  const handleAddEdit = async () => {
-    if (!newCategoryName.trim()) {
-      return;
-    }
+  const handleAdd = async () => {
+    if (!newCategoryName.trim()) return;
 
     try {
       setIsSubmitting(true);
-      if (editingCategory) {
-        await apiService.updateCategory(
-          editingCategory.id,
-          newCategoryName.trim()
-        );
-      } else {
-        await apiService.createCategory(newCategoryName.trim());
-      }
+      await apiService.createCategory(newCategoryName.trim());
       await fetchCategories();
       handleModalClose();
     } catch (err) {
-      setError(
-        `Failed to ${
-          editingCategory ? "update" : "create"
-        } category. Please try again.`
-      );
+      setError("Failed to create category. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -101,21 +87,8 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
   };
 
   const handleModalClose = () => {
-    setEditingCategory(null);
     setNewCategoryName("");
     onClose();
-  };
-
-  const openEditModal = (category: Category) => {
-    setEditingCategory(category);
-    setNewCategoryName(category.name);
-    onOpen();
-  };
-
-  const openAddModal = () => {
-    setEditingCategory(null);
-    setNewCategoryName("");
-    onOpen();
   };
 
   return (
@@ -128,7 +101,7 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
             <Button
               className= "btn-primary"
               startContent={<Plus size={16} />}
-              onClick={openAddModal}
+              onClick={onOpen}
             >
               Add Category
             </Button>
@@ -168,15 +141,6 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
                   <TableCell>
                     {isAuthenticated ? (
                       <div className="flex gap-2">
-                        <Button
-                          isIconOnly
-                          variant="flat"
-                          className="btn-action-edit"
-                          size="sm"
-                          onClick={() => openEditModal(category)}
-                        >
-                          <Edit2 size={16} />
-                        </Button>
                         <Tooltip
                           content={
                             category.postCount
@@ -222,7 +186,7 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
       >
         <ModalContent>
           <ModalHeader>
-            {editingCategory ? "Edit Category" : "Add Category"}
+            Add Category
           </ModalHeader>
           <ModalBody>
             <Input
@@ -239,10 +203,10 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ isAuthenticated }) => {
             </Button>
             <Button
               className="btn-primary"
-              onClick={handleAddEdit}
+              onClick={handleAdd}
               isLoading={isSubmitting}
             >
-              {editingCategory ? "Update" : "Add"}
+              Add Category
             </Button>
           </ModalFooter>
         </ModalContent>
