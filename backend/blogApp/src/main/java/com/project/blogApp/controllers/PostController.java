@@ -88,15 +88,14 @@ public class PostController {
     @GetMapping(path = "/me")
     public ResponseEntity<List<PostDto>> getMyPublishedPosts(@RequestAttribute UUID userId) {
         User loggedInUser = userService.getUserById(userId);
-        // Use the existing repository logic via the service
         List<Post> posts = postService.getPublishedPostsByUser(loggedInUser); 
         List<PostDto> postDtos = posts.stream().map(postMapper::toDto).toList();
         return ResponseEntity.ok(postDtos);
     }
     
     @PatchMapping(path = "/{id}/clap")
-    public ResponseEntity<Map<String, Integer>> clapPost(@PathVariable UUID id) {
-        int newCount = postService.clapPost(id);
+    public ResponseEntity<Map<String, Integer>> clapPost(@PathVariable UUID id, @RequestAttribute UUID userId) {     
+        int newCount = postService.clapPost(id, userId);
         return ResponseEntity.ok(Map.of("clapCount", newCount));
     }
 

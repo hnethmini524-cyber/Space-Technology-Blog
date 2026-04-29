@@ -15,5 +15,5 @@ public interface PostService {
     Post updatePost(UUID id, UpdatePostRequest updatePostRequest, User user);
     List<Post> getPublishedPostsByUser(User user);
     void deletePost(UUID id, User user);
-    int clapPost(UUID id);
+    int clapPost(UUID id, UUID userId);
 }

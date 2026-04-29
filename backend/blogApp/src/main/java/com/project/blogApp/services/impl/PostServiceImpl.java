@@ -4,20 +4,26 @@ import com.project.blogApp.domain.CreatePostRequest;
 import com.project.blogApp.domain.PostStatus;
 import com.project.blogApp.domain.UpdatePostRequest;
 import com.project.blogApp.domain.entities.Category;
+import com.project.blogApp.domain.entities.Clap;
 import com.project.blogApp.domain.entities.Post;
 import com.project.blogApp.domain.entities.Tag;
 import com.project.blogApp.domain.entities.User;
-import com.project.blogApp.exception.ResourceNotFoundException;
+//import com.project.blogApp.exception.ResourceNotFoundException;
+import com.project.blogApp.repositories.ClapRepository;
 import com.project.blogApp.repositories.PostRepository;
 import com.project.blogApp.services.CategoryService;
 import com.project.blogApp.services.PostService;
 import com.project.blogApp.services.TagService;
+import com.project.blogApp.services.UserService;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +37,9 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final CategoryService categoryService;
+    private final ClapRepository clapRepository;
     private final TagService tagService;
+    private final UserService userService;
 
     private static final int WORDS_PER_MINUTE = 200;
 
@@ -156,11 +164,28 @@ public class PostServiceImpl implements PostService {
     }
     
     @Override
-    public int clapPost(UUID id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
+    @Transactional
+    public int clapPost(UUID postId, UUID userId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
         
+        User user = userService.getUserById(userId);
+
+        // 3. Find or Initialize Clap record
+        Clap clap = clapRepository.findByPostAndUser(post, user)
+                .orElse(Clap.builder()
+                        .post(post)
+                        .user(user)
+                        .count(0)
+                        .build());
+        if (clap.getCount() >= 50) {
+            // You can create a custom GlobalExceptionHandler to catch this
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You have reached the maximum of 50 claps for this post.");
+        }
+        clap.setCount(clap.getCount() + 1);
         post.setClapCount(post.getClapCount() + 1);
+
+        clapRepository.save(clap);
         postRepository.save(post);
         
         return post.getClapCount(); 
