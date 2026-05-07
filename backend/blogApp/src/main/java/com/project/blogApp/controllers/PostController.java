@@ -32,15 +32,15 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<PostDto>> getAllPosts(
-            @RequestParam(required = false) UUID categoryId,
-            @RequestParam(required = false) UUID tagId) {
+            @RequestParam(name = "categoryId",required = false) UUID categoryId,
+            @RequestParam(name = "tagId",required = false) UUID tagId) {
         List<Post> posts = postService.getAllPosts(categoryId, tagId);
         List<PostDto> postDtos = posts.stream().map(postMapper::toDto).toList();
         return ResponseEntity.ok(postDtos);
     }
 
     @GetMapping(path = "/drafts")
-    public ResponseEntity<List<PostDto>> getDrafts(@RequestAttribute UUID userId) {
+    public ResponseEntity<List<PostDto>> getDrafts(@RequestAttribute("userId") UUID userId) {
         User loggedInUser = userService.getUserById(userId);
         List<Post> draftPosts = postService.getDraftPosts(loggedInUser);
         List<PostDto> postDtos = draftPosts.stream().map(postMapper::toDto).toList();
@@ -50,7 +50,7 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostDto> createPost(
             @Valid @RequestBody CreatePostRequestDto createPostRequestDto,
-            @RequestAttribute UUID userId) {
+            @RequestAttribute("userId") UUID userId) {
         User loggedInUser = userService.getUserById(userId);
         CreatePostRequest createPostRequest = postMapper.toCreatePostRequest(createPostRequestDto);
         Post createdPost = postService.createPost(loggedInUser, createPostRequest);
@@ -60,7 +60,7 @@ public class PostController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<PostDto> updatePost(
-            @PathVariable UUID id,
+            @PathVariable("id") UUID id,
             @Valid @RequestBody UpdatePostRequestDto updatePostRequestDto, @RequestAttribute UUID userId) {
     	User user = userService.getUserById(userId);
         UpdatePostRequest updatePostRequest = postMapper.toUpdatePostRequest(updatePostRequestDto);
@@ -71,7 +71,7 @@ public class PostController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<PostDto> getPost(
-            @PathVariable UUID id
+            @PathVariable("id") UUID id
     ) {
         Post post = postService.getPost(id);
         PostDto postDto = postMapper.toDto(post);
@@ -79,14 +79,14 @@ public class PostController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable UUID id, @RequestAttribute UUID userId) {
+    public ResponseEntity<Void> deletePost(@PathVariable("id") UUID id, @RequestAttribute("userId") UUID userId) {
     	User currentUser = userService.getUserById(userId);
         postService.deletePost(id, currentUser);
         return ResponseEntity.noContent().build();
     }
     
     @GetMapping(path = "/me")
-    public ResponseEntity<List<PostDto>> getMyPublishedPosts(@RequestAttribute UUID userId) {
+    public ResponseEntity<List<PostDto>> getMyPublishedPosts(@RequestAttribute("userId") UUID userId) {
         User loggedInUser = userService.getUserById(userId);
         List<Post> posts = postService.getPublishedPostsByUser(loggedInUser); 
         List<PostDto> postDtos = posts.stream().map(postMapper::toDto).toList();
@@ -94,7 +94,7 @@ public class PostController {
     }
     
     @PatchMapping(path = "/{id}/clap")
-    public ResponseEntity<Map<String, Integer>> clapPost(@PathVariable UUID id, @RequestAttribute UUID userId) {     
+    public ResponseEntity<Map<String, Integer>> clapPost(@PathVariable("id") UUID id, @RequestAttribute("userId") UUID userId) {     
         int newCount = postService.clapPost(id, userId);
         return ResponseEntity.ok(Map.of("clapCount", newCount));
     }

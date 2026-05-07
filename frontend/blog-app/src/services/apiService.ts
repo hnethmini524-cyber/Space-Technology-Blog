@@ -15,6 +15,9 @@ export interface RegisterRequest {
 export interface AuthResponse {
   token: string;
   expiresIn: number;
+}
+
+export interface UserDto {
   userId: string;
   userName: string;
   email: string;
@@ -161,19 +164,6 @@ class ApiService {
   public async login(credentials: LoginRequest): Promise<AuthResponse> {
     const response: AxiosResponse<AuthResponse> = await this.api.post('/auth/login', credentials);
     localStorage.setItem('token', response.data.token);
-    if (response.data.userId) {
-        localStorage.setItem('userId', response.data.userId);
-    }
-    if (response.data.userName) {
-        localStorage.setItem('userName', response.data.userName);
-    }
-    if (response.data.createdAt) {
-    localStorage.setItem('userCreatedAt', response.data.createdAt);
-    }
-    // Also ensure email is saved
-    if (response.data.email) {
-        localStorage.setItem('userEmail', response.data.email);
-    }
     return response.data;
   }
 
@@ -181,20 +171,12 @@ class ApiService {
     const response: AxiosResponse<AuthResponse> = await this.api.post('/auth/register', data);
     // Auto-login after successful registration
     localStorage.setItem('token', response.data.token);
-    if (response.data.userId) {
-      localStorage.setItem('userId', response.data.userId);
-    }
-    const displayName = response.data.userName || data.name;
-    localStorage.setItem('userName', displayName);
+    return response.data;
+  }
 
-    if (response.data.createdAt) {
-    localStorage.setItem('userCreatedAt', response.data.createdAt);
-    }
-    // Also ensure email is saved
-    if (response.data.email) {
-        localStorage.setItem('userEmail', response.data.email);
-    }
-
+  // Method to fetch the profile
+  public async fetchCurrentUser(): Promise<UserDto> {
+    const response: AxiosResponse<UserDto> = await this.api.get('/users/me');
     return response.data;
   }
 
@@ -316,7 +298,7 @@ class ApiService {
   }): Promise<Post[]> {
       const response: AxiosResponse<Post[]> = await this.api.get('/posts/me', { params });
       return response.data;
-    }
+  }
 
   // Image upload
   public async uploadImage(file: File): Promise<string> {

@@ -12,7 +12,7 @@ import {
 } from '@nextui-org/react';
 import { User, Mail, CalendarDays, UserRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { apiService, Post, PostStatus } from '../services/apiService';
+import { apiService, Post, PostStatus, UserDto } from '../services/apiService';
 import PostList from '../components/PostList';
 
 //function for handle empty state
@@ -50,32 +50,32 @@ const ProfilePage = () => {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("updatedAt,desc");
+  const [userProfile, setUserProfile] = useState<UserDto | null>(null);
   
-  // User info from LocalStorage (set during login)
-  const userName = localStorage.getItem('userName') || "Guest User";
-  const userEmail = localStorage.getItem('userEmail') || "No Email Found"; 
-  const userId = localStorage.getItem('userId');
-  const rawDate = localStorage.getItem('userCreatedAt');
-  const joinedDate = rawDate ? new Date(rawDate).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) : "Not available";
-
+  const formatDate = (dateString: string) => { return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',month: 'long', day: 'numeric'});
+  };
   // 2. Fetch Data on Mount
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         // Fetching Published and Drafts in parallel
-        const [postsRes, draftsRes] = await Promise.all([
+        const [userRes, postsRes, draftsRes] = await Promise.all([
+          apiService.fetchCurrentUser(),
           apiService.getMyPosts({ status: PostStatus.PUBLISHED }),
           apiService.getDrafts({ page: 0, size: 10 })
         ]);
 
         console.log("Published Posts:", postsRes);
         
+        setUserProfile(userRes);
         setPublishedPosts(postsRes);
         setDrafts(draftsRes);
         setError(null);
       } catch (err) {
         console.error("Failed to fetch profile data", err);
+        setError("Could not load profile");
       } finally {
         setLoading(false);
       }
@@ -170,7 +170,7 @@ const ProfilePage = () => {
                 radius="full"
               />
               
-              <h2 className="text-2xl font-bold mt-6 text-center text-white/80">{userName}</h2>
+              <h2 className="text-2xl font-bold mt-6 text-center text-white/80">{userProfile?.userName}</h2>
 
               <div className="w-full text-left space-y-5 mt-10">
                 <div className="space-y-1">
@@ -178,7 +178,7 @@ const ProfilePage = () => {
                     <Mail size={16} />
                     <p className="text-sm font-medium">Email address:</p>
                   </div>
-                  <p className="text-sm font-medium text-white/90 pl-6">{userEmail}</p>
+                  <p className="text-sm font-medium text-white/90 pl-6">{userProfile?.email}</p>
                 </div>
                 
                 <Divider className="bg-white/10" />
@@ -189,7 +189,7 @@ const ProfilePage = () => {
                     <p className="text-sm font-medium">Created At:</p>
                   </div>
                   <p className="text-sm font-medium text-white/90 pl-6 uppercase text-[10px]">
-                    {joinedDate}
+                    {userProfile?.createdAt ? formatDate(userProfile.createdAt) : "Not available"}
                   </p>
                 </div>
               </div>

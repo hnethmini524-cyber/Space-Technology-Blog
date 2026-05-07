@@ -48,6 +48,7 @@ const RegisterPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#030617] px-4">
+      <div className="starfield" />
       <div className="w-full max-w-lg bg-[#0b1121]/50 border border-purple-500/50 shadow-[0_0_30px_rgba(168,85,247,0.3)] backdrop-blur-xl rounded-3xl p-12">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-white/40">

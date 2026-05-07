@@ -377,6 +377,7 @@ const PostForm: React.FC<PostFormProps> = ({
               {selectedTags.map((tag) => (
                 <Chip
                   key={tag.id}
+                  className="tag-asteroid"
                   onClose={() => handleTagRemove(tag)}
                   variant="flat"
                   endContent={<X size={14} />}
