@@ -29,28 +29,28 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/posts/{postId}/comments")
-    public ResponseEntity<List<CommentResponseDto>> getComments(@PathVariable UUID postId) {
+    public ResponseEntity<List<CommentResponseDto>> getComments(@PathVariable("postId") UUID postId) {
         return ResponseEntity.ok(commentService.getCommentsByPost(postId));
     }
 
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<CommentResponseDto> addComment(
-            @PathVariable UUID postId,
+            @PathVariable("postId") UUID postId,
             @Valid @RequestBody CommentRequestDto request,
-            @RequestAttribute UUID userId) { 
+            @RequestAttribute("userId") UUID userId) { 
         
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(commentService.addComment(postId, userId, request));
     }
     
     @PostMapping("/comments/{commentId}/like")
-    public ResponseEntity<CommentResponseDto> likeComment(@PathVariable UUID commentId) {
+    public ResponseEntity<CommentResponseDto> likeComment(@PathVariable("commentId") UUID commentId) {
         CommentResponseDto updated = commentService.likeComment(commentId);
         return ResponseEntity.ok(updated);
     }
     
     @DeleteMapping("/comments/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable UUID commentId, @RequestAttribute UUID userId) {
+    public ResponseEntity<Void> deleteComment(@PathVariable("commentId") UUID commentId, @RequestAttribute("userId") UUID userId) {
         commentService.deleteComment(commentId, userId);
         return ResponseEntity.noContent().build();
     }

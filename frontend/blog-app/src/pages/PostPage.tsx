@@ -1,35 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Chip,
-  Button,
-  Divider,
-  Avatar,
-  Textarea,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from '@nextui-org/react';
-import { 
-  Calendar,
-  Clock,
-  Tag,
-  Edit,
-  Trash,
-  ArrowLeft,
-  Share,
-  MessageCircle, 
-  ThumbsUp, 
-  MoreHorizontal,
-  Heart 
-} from 'lucide-react';
-import { apiService, Post } from '../services/apiService';
+import {Card,CardHeader,CardBody,CardFooter,Chip,Button,Divider,Avatar,Textarea,Dropdown,DropdownTrigger,DropdownMenu,DropdownItem,} from '@nextui-org/react';
+import { Calendar,Clock,Tag,Edit,Trash,ArrowLeft,Share,MessageCircle, ThumbsUp, MoreHorizontal,Heart } from 'lucide-react';
+import { apiService, Post, UserDto } from '../services/apiService';
+import { useAuth } from '../components/AuthContext';
 
 interface PostPageProps {
   isAuthenticated?: boolean;
@@ -47,8 +22,8 @@ interface Comment {
 }
 
 const PostPage: React.FC<PostPageProps> = ({ 
-  isAuthenticated,
-  currentUserId
+  //isAuthenticated,
+  currentUserId: propUserId
 }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -63,18 +38,20 @@ const PostPage: React.FC<PostPageProps> = ({
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user, isAuthenticated } = useAuth();
 
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
-  const storedId = localStorage.getItem('userId');
   const postAuthorId = post?.author?.id;
 
-  console.log("IDs:", { storedId, postAuthorId });
-  console.log("Current User ID:", storedId);
+  //console.log("IDs:", { storedId, postAuthorId });
+  //console.log("Current User ID:", storedId);
   const token = localStorage.getItem('token');
+  console.log("Post Author ID:", post?.author?.id)
+  console.log("Local User ID:", localStorage.getItem('userId'))
 
   console.log("--- AUTH CHECK ---");
-  console.log("Stored UserID:", storedId);
+  //console.log("Stored UserID:", storedId);
   console.log("Token Present:", !!token); 
   console.log("------------------");
 
@@ -89,14 +66,10 @@ const PostPage: React.FC<PostPageProps> = ({
   };
   //const currentUserId = localStorage.getItem('userId');
   const isAuthor = React.useMemo(() => {
-    const sId = localStorage.getItem('userId');
-    const pAuthId = post?.author?.id;
-  
-    if (!sId || !pAuthId) return false;
-  
-    // Clean comparison
-    return String(sId).toLowerCase() === String(pAuthId).toLowerCase();
-  }, [post, isAuthenticated]);
+    // Use user?.userId from context instead of localStorage
+    if (!user || !post?.author?.id) return false;
+    return String(user.userId).toLowerCase() === String(post.author.id).toLowerCase();
+  }, [user, post]);
 
   useEffect(() => {
     const fetchPostData = async () => {
@@ -465,19 +438,19 @@ const PostPage: React.FC<PostPageProps> = ({
                         </Button>
                       </DropdownTrigger>
                       <DropdownMenu aria-label="Comment actions">
-                         {/* Check if current user is the author of the comment OR the post author */}
-                         {(storedId === comment.userId || isAuthor) ? (
+                        {(user && (String(user.userId) === String(comment.userId) || String(user.userId) === String(post?.author?.id))) ? (
                           <DropdownItem 
-                              key="delete" 
-                              className="text-danger" 
-                              color="danger"
-                              startContent={<Trash size={14} />}
-                              onClick={() => handleDeleteComment(comment.id)}
-                            >
-                              Delete
+                            key="delete" 
+                            className="text-danger" 
+                            color="danger"
+                            startContent={<Trash size={14} />}
+                            onClick={() => handleDeleteComment(comment.id)}
+                          >
+                            Delete
                           </DropdownItem>
-                          ) : (
-                        <DropdownItem key="report">Delete</DropdownItem>
+                        ) : (
+                          // We return an empty DropdownItem or null to keep the Menu happy
+                          <DropdownItem key="none" className="hidden" />
                         )}
                       </DropdownMenu>
                     </Dropdown>

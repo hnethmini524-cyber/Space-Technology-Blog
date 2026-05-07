@@ -7,6 +7,7 @@ import com.project.blogApp.domain.entities.User;
 
 import java.util.List;
 import java.util.UUID;
+
 public interface PostService {
     Post getPost(UUID id);
     List<Post> getAllPosts(UUID categoryId, UUID tagId);

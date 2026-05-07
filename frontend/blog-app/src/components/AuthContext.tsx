@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { apiService } from '../services/apiService';
+import { apiService, UserDto } from '../services/apiService';
 
 interface AuthUser {
   id: string;
@@ -9,7 +9,7 @@ interface AuthUser {
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: AuthUser | null;
+  user: UserDto | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   token: string | null;
@@ -23,8 +23,19 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<UserDto | null>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+
+  const loadUserProfile = async () => {
+    try {
+      const userProfile = await apiService.fetchCurrentUser();
+      setUser(userProfile);
+      setIsAuthenticated(true);
+    } catch (error) {
+      // If fetching fails, token is likely expired
+      logout();
+    }
+  };
 
   // Initialize auth state from token
   useEffect(() => {
@@ -34,7 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
           // TODO: Add endpoint to fetch user profile
           // const userProfile = await apiService.getUserProfile();
-          // setUser(userProfile);
+          loadUserProfile();
           setIsAuthenticated(true);
           setToken(storedToken);
         } catch (error) {
@@ -60,7 +71,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       // TODO: Add endpoint to fetch user profile after login
       // const userProfile = await apiService.getUserProfile();
-      // setUser(userProfile);
+      await loadUserProfile();
     } catch (error) {
       throw error;
     }
