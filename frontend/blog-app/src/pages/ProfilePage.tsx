@@ -170,7 +170,7 @@ const ProfilePage = () => {
                 radius="full"
               />
               
-              <h2 className="text-2xl font-bold mt-6 text-center text-white/80">{userProfile?.userName}</h2>
+              <h2 className="text-2xl font-bold mt-6 text-center text-white/80">Explorer: {userProfile?.userName}</h2>
 
               <div className="w-full text-left space-y-5 mt-10">
                 <div className="space-y-1">

@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import EditPostPage from "./pages/EditPostPage";
 import PostPage from "./pages/PostPage";
@@ -29,15 +30,16 @@ function AppContent() {
 
   return (
     <BrowserRouter>
+    <div className="flex flex-col min-h-screen">
       <NavBar 
         isAuthenticated={isAuthenticated}
         userProfile={user ? {
-          name: user.name,
+          name: user.userName,
           avatar: undefined // Add avatar support if needed
         } : undefined}
         onLogout={logout}
       />
-      <main className="container mx-auto py-6">
+      <main className="container mx-auto py-6 flex-grow pb-24">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -80,6 +82,8 @@ function AppContent() {
           />
         </Routes>
       </main>
+      <Footer />
+      </div>
     </BrowserRouter>
   );
 }
