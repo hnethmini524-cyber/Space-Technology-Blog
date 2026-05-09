@@ -19,6 +19,7 @@ import com.project.blogApp.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -170,25 +171,37 @@ public class PostServiceImpl implements PostService {
     public int clapPost(UUID postId, UUID userId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
-        
         User user = userService.getUserById(userId);
 
-        // 3. Find or Initialize Clap record
+        // Try to find the existing record
         Clap clap = clapRepository.findByPostAndUser(post, user)
-                .orElse(Clap.builder()
-                        .post(post)
-                        .user(user)
-                        .count(0)
-                        .build());
+                .orElseGet(() -> {
+                    // If not found, create a new one but be prepared for a collision
+                    return Clap.builder()
+                            .post(post)
+                            .user(user)
+                            .count(0)
+                            .build();
+                });
+
         if (clap.getCount() >= 50) {
-            // You can create a custom GlobalExceptionHandler to catch this
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You have reached the maximum of 50 claps for this post.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Maximum claps reached.");
         }
+
         clap.setCount(clap.getCount() + 1);
         post.setClapCount(post.getClapCount() + 1);
 
-        clapRepository.save(clap);
-        postRepository.save(post);
+        try {
+            clapRepository.saveAndFlush(clap); // Force immediate write to catch the error here
+            postRepository.save(post);
+        } catch (DataIntegrityViolationException e) {
+            // This catches the 'fast click' duplicate insert.
+            // We simply fetch the record that the OTHER request just created and update it instead.
+            Clap actualClap = clapRepository.findByPostAndUser(post, user)
+                    .orElseThrow(() -> e); // Rethrow if it's a different integrity issue
+            actualClap.setCount(actualClap.getCount() + 1);
+            clapRepository.save(actualClap);
+        }
         
         return post.getClapCount(); 
     }

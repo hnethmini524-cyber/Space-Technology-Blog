@@ -33,6 +33,7 @@ const PostPage: React.FC<PostPageProps> = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const [isClapped, setIsClapped] = useState(false);
+  const [isClapping, setIsClapping] = useState(false);
   
   // Comment specific states
   const [commentText, setCommentText] = useState("");
@@ -146,18 +147,24 @@ const PostPage: React.FC<PostPageProps> = ({
   };
 
   const handleClap = async () => {
-    if (!post || !id) return;
+    if (!post || !id || isClapping) return; // Ignore if already in progress
+
     try {
+      setIsClapping(true); // Lock the action
+      
       // Optimistic UI update
       setIsClapped(true);
       setPost(prev => prev ? { ...prev, clapCount: (prev.clapCount || 0) + 1 } : prev);
       
-      await apiService.clapPost(id); // Ensure this exists in your apiService
+      await apiService.clapPost(id);
     } catch (err) {
       console.error("Failed to clap:", err);
-      // Revert if failed
+      // Revert UI on error
       setIsClapped(false);
       setPost(prev => prev ? { ...prev, clapCount: (prev.clapCount || 0) - 1 } : prev);
+    } finally {
+      // Small delay before unlocking to prevent accidental double-taps
+      setTimeout(() => setIsClapping(false), 300);
     }
   };
 
@@ -322,7 +329,7 @@ const PostPage: React.FC<PostPageProps> = ({
               startContent={
                 <Heart  
                   size={18} 
-                  className={isClapped ? 'text-primary animate-pulse' : 'text-white/40'} 
+                  className={isClapped ? 'text-primary fill-primary drop-shadow-[0_0_8px_rgba(0,230,255,0.5)] animate-pulse' : 'text-white/40'}
                 />
               }
             >

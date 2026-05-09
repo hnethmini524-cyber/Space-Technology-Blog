@@ -23,6 +23,8 @@ const ForgotPasswordRequest = ({ onBack }: { onBack: () => void }) => {
   };
 
   return (
+    <>
+    <div className="starfield" />
     <Card className="w-full max-w-md bg-[#0b1121]/90 border border-white/10 backdrop-blur-md">
       <CardHeader className="flex flex-col gap-1 items-start px-6 pt-6">
         <h2 className="text-xl font-bold text-white">Reset Access</h2>
@@ -45,8 +47,8 @@ const ForgotPasswordRequest = ({ onBack }: { onBack: () => void }) => {
             />
             <Button 
               type="submit" 
-              color="primary" 
-              className="w-full font-bold" 
+              color="secondary" 
+              className="w-full font-bold bg-[#9614d0]" 
               isLoading={isLoading}
               endContent={!isLoading && <Send size={18} />}
             >
@@ -74,6 +76,7 @@ const ForgotPasswordRequest = ({ onBack }: { onBack: () => void }) => {
         )}
       </CardBody>
     </Card>
+    </>
   );
 };
 

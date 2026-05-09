@@ -61,13 +61,13 @@ const NavBar: React.FC<NavBarProps> = ({
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand>
-          <Link to="/" className="nav-logo-gradient">Blog Platform</Link>
+          <Link to="/" className="nav-logo-gradient">Space Blog Platform</Link>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="start">
         <NavbarBrand>
-          <Link to="/" className="nav-logo-gradient">Blog Platform</Link>
+          <Link to="/" className="nav-logo-gradient">Space Blog Platform</Link>
         </NavbarBrand>
         {menuItems.map((item) => (
           <NavbarItem
