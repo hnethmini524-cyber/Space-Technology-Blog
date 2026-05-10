@@ -21,7 +21,6 @@ const RegisterPage = () => {
       setIsLoading(true);
       const response = await apiService.register({ name, email, password });
       if (response && response.token) {
-      // Provide both email AND token if your useAuth.login requires 2 arguments
       login(email, response.token); 
       navigate('/'); // Redirect to dashboard
       }
@@ -58,7 +57,7 @@ const RegisterPage = () => {
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
-            {/* Full Name Input */}
+            {/* Full name input */}
             <div>
               <label htmlFor="full-name" className="sr-only text-white/40">
                 Full Name
@@ -76,7 +75,7 @@ const RegisterPage = () => {
               />
             </div>
 
-            {/* Email Input */}
+            {/* Email input */}
             <div>
               <label htmlFor="email-address" className="sr-only text-white/40">
                 Email address
@@ -95,7 +94,7 @@ const RegisterPage = () => {
               />
             </div>
 
-            {/* Password Input */}
+            {/* Password input */}
             <div>
               <label htmlFor="password" className="sr-only text-white/40">
                 Password
@@ -115,7 +114,7 @@ const RegisterPage = () => {
             </div>
           </div>
 
-          {/* Error Alert Box (Matched to LoginPage) */}
+          {/* Error alert box */}
           {error && (
             <div className="rounded-md bg-red-50 p-4">
               <div className="flex">

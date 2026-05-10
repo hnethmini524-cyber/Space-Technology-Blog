@@ -86,7 +86,16 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Fix for Typography Plugin in Dark Mode */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Fix for typography plugin in dark mode */
 .prose-invert {
   --tw-prose-body: rgba(255, 255, 255, 0.8);
   --tw-prose-headings: #ffffff;
@@ -94,7 +103,7 @@ html {
   --tw-prose-bold: #ffffff;
 }
 
-/* NextUI Card Dark Mode Manual Override */
+/* NextUI card dark mode manual override */
 .dark-card {
   background-color: #0b1121 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -137,7 +146,7 @@ html {
   border: rgba(209,106,255,.35);
 }
 
-/* --- Space Tech Navigation Styles --- */
+/* --- Navigation styles --- */
 .nav-link-plasma {
   @apply text-slate-400 transition-all duration-300 font-medium;
 }
@@ -170,7 +179,7 @@ html {
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
 }
 
-/* 3. "Asteroid" Tags styling */
+/* Asteroid tags styling */
 .tag-asteroid {
   @apply px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest transition-all duration-300;
   background: rgba(255, 255, 255, 0.03);
@@ -191,7 +200,7 @@ html {
   box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
 }
 
-/* Post Card Glassmorphism border-cyan-500/30*/
+/* Post card glassmorphism */
 .post-card-space {
   @apply bg-[#0b1121]/40 border border-white/5 transition-all duration-500;
   backdrop-filter: blur(8px); 
@@ -216,7 +225,7 @@ html {
   @apply translate-y-full;
 }
 
-/* --- Categories page Styles --- */
+/* --- Categories/Tags page styles --- */
 
 .space-table-wrapper {
   @apply bg-transparent shadow-none !important;
@@ -363,7 +372,7 @@ html {
   letter-spacing: 0.05em;
 }
 
-/* small stars */
+/* Small stars in background */
 .starfield {
   position: fixed;
   top: 0;

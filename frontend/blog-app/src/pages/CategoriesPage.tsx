@@ -9,16 +9,7 @@ import {
   TableHeader,
   TableBody,
   TableColumn,
-  TableRow,
-  TableCell,
-  useDisclosure,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Tooltip,
-} from "@nextui-org/react";
+  TableRow,TableCell,useDisclosure,Modal,ModalContent,ModalHeader,ModalBody,ModalFooter,Tooltip,} from "@nextui-org/react";
 import { Plus, Trash2 } from "lucide-react";
 import { apiService, Category } from "../services/apiService";
 

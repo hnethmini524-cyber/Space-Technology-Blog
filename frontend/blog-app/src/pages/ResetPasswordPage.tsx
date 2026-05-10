@@ -18,7 +18,6 @@ const ResetPasswordPage = () => {
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // 1. Guard clause: check if token actually exists
     if (!token) {
       setError("Invalid or missing reset token. Please check your email link.");
       return;
@@ -31,7 +30,6 @@ const ResetPasswordPage = () => {
 
     setIsLoading(true);
     try {
-      // Now TypeScript knows 'token' is a string here
       await apiService.resetPassword({ token, password });
       setIsSuccess(true);
     } catch (err: any) {
@@ -43,6 +41,7 @@ const ResetPasswordPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#030617] p-4">
+      <div className="starfield" />
       <Card className="w-full max-w-md bg-[#0b1121]/90 border border-purple-500/30 backdrop-blur-xl">
         <CardHeader className="flex flex-col gap-1 items-start px-6 pt-6">
           <h2 className="text-2xl font-bold text-white">New Credentials</h2>

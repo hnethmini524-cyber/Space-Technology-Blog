@@ -27,8 +27,7 @@ const LoginPage = () => {
       setIsLoading(false);
     }
   };
-
-  // If the user clicked "Forgot Password", show that component instead
+  
   if (showForgot) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#030617] p-4">
