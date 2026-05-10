@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import { apiService, Post, PostStatus, UserDto } from '../services/apiService';
 import PostList from '../components/PostList';
 
-//function for handle empty state
+//Fuction to handle empty state
 const EmptyState = ({ type }: { type: 'posts' | 'drafts' }) => (
   <div className="flex flex-col items-center justify-center py-16 text-center space-y-4">
     <div className="relative">
@@ -43,7 +43,7 @@ const EmptyState = ({ type }: { type: 'posts' | 'drafts' }) => (
 );
 
 const ProfilePage = () => {
-  // 1. States for Data
+  // States for Data
   const [publishedPosts, setPublishedPosts] = useState<Post[]>([]);
   const [drafts, setDrafts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,7 +55,6 @@ const ProfilePage = () => {
   const formatDate = (dateString: string) => { return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',month: 'long', day: 'numeric'});
   };
-  // 2. Fetch Data on Mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -85,33 +84,33 @@ const ProfilePage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#030617] text-white overflow-y-auto px-4 py-10">
-      <div className="starfield" />
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10">
-        
-        {/* === Left Side: Content Tabs === */}
-        <div className="flex-grow">
-          <Tabs 
-            variant="underlined" 
-            color="primary"
-            classNames={{
-              tabList: "gap-6",
-              cursor: "w-full bg-primary",
-              tab: "max-w-fit px-0 h-12 text-white/70",
-              tabContent: "group-data-[selected=true]:text-white font-semibold text-base"
-            }}
-          >
-            {/* My Posts Tab */}
-            <Tab key="posts" title={
-              <div className="flex items-center space-x-2">
-                <span>My Posts</span>
-                <Chip size="sm" variant="flat" className="bg-white/10 text-white/90">
-                  {publishedPosts?.length || 0}
-                </Chip>
-              </div>
-            }>
-              <div className="mt-8">
-                {!loading && publishedPosts.length === 0 ? (
+  <div className="min-h-screen bg-[#030617] text-white overflow-y-auto px-4 py-6 md:py-10">
+    <div className="starfield" />
+    <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10">
+      
+      {/* Left side: Content tabs */}
+      <div className="w-full md:flex-grow order-2 md:order-1">
+        <Tabs 
+          variant="underlined" 
+          color="primary"
+          classNames={{
+            base: "w-full overflow-x-auto", 
+            tabList: "gap-4 md:gap-6 w-full relative rounded-none border-b border-divider",
+            cursor: "w-full bg-primary",
+            tab: "max-w-fit px-2 md:px-0 h-12 text-white/70",
+            tabContent: "group-data-[selected=true]:text-white font-semibold text-sm md:text-base"
+          }}
+        >
+          <Tab key="posts" title={
+            <div className="flex items-center space-x-2">
+              <span>My Posts</span>
+              <Chip size="sm" variant="flat" className="bg-white/10 text-white/90">
+                {publishedPosts?.length || 0}
+              </Chip>
+            </div>
+          }>
+            <div className="mt-6 md:mt-8">
+              {!loading && publishedPosts.length === 0 ? (
                   <EmptyState type="posts" />) : (
                     <PostList 
                       posts={publishedPosts} 
@@ -123,20 +122,19 @@ const ProfilePage = () => {
                       onSortChange={setSortBy}
                     />
                   )}
-              </div>
-            </Tab>
+            </div>
+          </Tab>
 
-            {/* My Drafts Tab - REPLICATING DRAFTSPAGE LOGIC */}
-            <Tab key="drafts" title={
-              <div className="flex items-center space-x-2">
-                <span>My Drafts</span>
-                <Chip size="sm" variant="flat" className="bg-white/10 text-white/90">
-                  {drafts?.length || 0}
-                </Chip>
-              </div>
-            }>
-              <div className="mt-8">
-                {!loading && drafts.length === 0 ? (
+          <Tab key="drafts" title={
+            <div className="flex items-center space-x-2">
+              <span>My Drafts</span>
+              <Chip size="sm" variant="flat" className="bg-white/10 text-white/90">
+                {drafts?.length || 0}
+              </Chip>
+            </div>
+          }>
+            <div className="mt-6 md:mt-8">
+              {!loading && drafts.length === 0 ? (
                   <EmptyState type="drafts" />) : (
                     <PostList 
                       posts={drafts} 
@@ -148,58 +146,62 @@ const ProfilePage = () => {
                       onSortChange={setSortBy}
                     />
                   )}
-              </div>
-            </Tab>
-          </Tabs>
-        </div>
-
-        {/* === Vertical Divider === */}
-        <div className="hidden md:block w-px border-l border-white/10 shrink-0 self-stretch" />
-
-        {/* === Right Side: User Details === */}
-        <div className="w-full md:w-64 shrink-0">
-          <Card className="bg-transparent shadow-none border-none sticky top-10">
-            <CardBody className="flex flex-col items-center p-0">
-              <Avatar 
-                showFallback
-                src={undefined} // Force fallback if no image exists
-                fallback={
-                  <UserRound size={80} className="text-white/60" /> 
-                }
-                className="w-40 h-40 text-large bg-space-800 border-4 border-starlight shadow-[0_0_20px_rgba(34,211,238,0.3)]" 
-                radius="full"
-              />
-              
-              <h2 className="text-2xl font-bold mt-6 text-center text-white/80">Explorer: {userProfile?.userName}</h2>
-
-              <div className="w-full text-left space-y-5 mt-10">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-white/40">
-                    <Mail size={16} />
-                    <p className="text-sm font-medium">Email address:</p>
-                  </div>
-                  <p className="text-sm font-medium text-white/90 pl-6">{userProfile?.email}</p>
-                </div>
-                
-                <Divider className="bg-white/10" />
-
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-white/40">
-                    <CalendarDays size={16} />
-                    <p className="text-sm font-medium">Created At:</p>
-                  </div>
-                  <p className="text-sm font-medium text-white/90 pl-6 uppercase text-[10px]">
-                    {userProfile?.createdAt ? formatDate(userProfile.createdAt) : "Not available"}
-                  </p>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-
+            </div>
+          </Tab>
+        </Tabs>
       </div>
+
+      {/* Vertical divider */}
+      <div className="hidden md:block w-px border-l border-white/10 shrink-0 self-stretch" />
+
+      {/* Right side: User details */}
+      <div className="w-full md:w-64 shrink-0 order-1 md:order-2">
+        <Card className="bg-transparent shadow-none border-none md:sticky md:top-10">
+          <CardBody className="flex flex-col items-center p-0">
+            <Avatar 
+              showFallback
+              src={undefined}
+              fallback={<UserRound className="w-12 h-12 md:w-20 md:h-20 text-white/60" />}
+              // Scaled size for mobile
+              className="w-32 h-32 md:w-40 md:h-40 bg-space-800 border-4 border-cyan-500/30 shadow-[0_0_20px_rgba(34,211,238,0.2)]" 
+              radius="full"
+            />
+            
+            <h2 className="text-xl md:text-2xl font-bold mt-4 md:mt-6 text-center text-white/80">
+              Explorer: {userProfile?.userName}
+            </h2>
+
+            {/* User info grid - two columns on mobile, single on desktop */}
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4 mt-6 md:mt-10">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-white/40">
+                  <Mail size={14} />
+                  <p className="text-xs md:text-sm font-medium">Email:</p>
+                </div>
+                <p className="text-xs md:text-sm font-medium text-cyan-400 truncate">{userProfile?.email}</p>
+              </div>
+              
+              <Divider className="bg-white/10 sm:hidden md:block" />
+
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-white/40">
+                  <CalendarDays size={14} />
+                  <p className="text-xs md:text-sm font-medium">Created At:</p>
+                </div>
+                <p className="px-1 text-xs md:text-sm font-medium uppercase tracking-wider text-cyan-400">
+                  {userProfile?.createdAt ? formatDate(userProfile.createdAt) : "Not available"}
+                </p>
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+        {/* Mobile-only divider after profile card */}
+        <Divider className="bg-white/10 mt-8 md:hidden" />
+      </div>
+
     </div>
-  );
+  </div>
+);
 };
 
 export default ProfilePage;

@@ -97,7 +97,7 @@ export interface ForgotPasswordRequest {
 
 export interface ResetPasswordRequest {
   token: string;
-  password?: string; // Optional if you handle confirmation logic in-service or component
+  password?: string; 
 }
 
 export interface MessageResponse {
@@ -180,6 +180,7 @@ class ApiService {
     return response.data;
   }
 
+  // Method to request to get interface for reset password
   public async requestPasswordReset(email: string): Promise<MessageResponse> {
     const response: AxiosResponse<MessageResponse> = await this.api.post('/auth/forgot-password', { email });
     return response.data;
@@ -269,7 +270,6 @@ class ApiService {
     return response.data;
   }
 
-
   public async addComment(postId: string, content: string): Promise<Comment> {
     const response: AxiosResponse<Comment> = await this.api.post(`/posts/${postId}/comments`, { content });
     return response.data;
@@ -294,13 +294,13 @@ class ApiService {
     page?: number;
     size?: number;
     sort?: string;
-    status: PostStatus; // We can filter by status here
+    status: PostStatus; 
   }): Promise<Post[]> {
       const response: AxiosResponse<Post[]> = await this.api.get('/posts/me', { params });
       return response.data;
   }
 
-  // Image upload
+  // Method to upload image
   public async uploadImage(file: File): Promise<string> {
     const formData = new FormData();
     formData.append("file", file);

@@ -58,11 +58,9 @@ const PostList: React.FC<PostListProps> = ({
       ALLOWED_ATTR: []
     });
     
-    // Create a temporary div to parse the HTML
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = sanitizedContent;
     
-    // Get the text content and limit it
     let textContent = tempDiv.textContent || tempDiv.innerText || '';
     textContent = textContent.trim();
     
@@ -124,16 +122,16 @@ const PostList: React.FC<PostListProps> = ({
                     <div className="flex-1 flex flex-col gap-2">
                       <div>
                         <h2 className="text-2xl font-bold text-left leading-tight text-white/80">{post.title}</h2>
-                        <p className="text-small text-default-500 mt-1 text-white/60">by {post.author?.name}</p>
+                        <p className="text-small text-default-500 mt-1 text-white/65">By {post.author?.name}</p>
                       </div>
                       
                       {/* Excerpt */}
-                      <p className="line-clamp-3 text-default-600 text-white/40">
+                      <p className="line-clamp-3 text-default-600 text-white/50">
                         {createExcerpt(post.content)}
                       </p>
                     </div>
                     
-                    {/* Right Side: Large Fixed-Ratio Image */}
+                    {/* Right side: fixed image */}
                     {post.imageUrl && (
                       <div className="image-container-space w-48 h-32 md:w-60 md:h-40 flex-shrink-0">
                         <img

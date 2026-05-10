@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import { 
   Card, 
   CardHeader, 
@@ -6,6 +6,7 @@ import {
   Tabs, 
   Tab,
 } from '@nextui-org/react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { apiService, Post, Category, Tag } from '../services/apiService';
 import PostList from '../components/PostList';
 
@@ -19,6 +20,12 @@ const HomePage: React.FC = () => {
   const [sortBy, setSortBy] = useState("createdAt,desc");
   const [selectedCategory, setSelectedCategory] = useState<string|undefined>(undefined);
   const [selectedTag, setSelectedTag] = useState<string | undefined>(undefined);
+
+  // arrows
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
+
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +54,38 @@ const HomePage: React.FC = () => {
     fetchData();
   }, [page, sortBy, selectedCategory, selectedTag]);
 
+  useEffect(() => {
+    checkScrollPosition();
+
+    window.addEventListener('resize', checkScrollPosition);
+
+    return () => {
+      window.removeEventListener('resize', checkScrollPosition);
+    };
+  }, [categories]);
+
+  const checkScrollPosition = () => {
+    const container = tabsContainerRef.current;
+    if (!container) return;
+    const { scrollLeft, scrollWidth, clientWidth } = container;
+    setShowLeftArrow(scrollLeft > 5);
+    setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 5);
+  };
+
+  const scrollTabs = (direction: 'left' | 'right') => {
+    const container = tabsContainerRef.current;
+
+    if (!container) return;
+    const scrollAmount = 250;
+
+    container.scrollBy({
+      left: direction === 'right' ? scrollAmount : -scrollAmount,
+      behavior: 'smooth',
+    });
+
+    setTimeout(checkScrollPosition, 300);
+  };
+
   const handleCategoryChange = (categoryId: string|undefined) => {
     if("all" === categoryId){
       setSelectedCategory(undefined)
@@ -65,26 +104,63 @@ const HomePage: React.FC = () => {
           </CardHeader>
           <CardBody>
             <div className="flex flex-col gap-4">                     
-              <Tabs 
-                selectedKey={selectedCategory} 
-                onSelectionChange={(key) => {
-                  handleCategoryChange(key as string)
-                }}
-                variant="underlined"
-                classNames={{
-                  tabList: "gap-6",
-                  cursor: "w-full bg-primary",
-                  tabContent: "group-data-[selected=true]:text-cyan-400",
-                }}
+              <div className="relative flex items-center">
+
+              {/* left arrow */}
+              {showLeftArrow && (
+                <button
+                  onClick={() => scrollTabs('left')}
+                  className="absolute left-0 z-20 h-10 w-10 rounded-full 
+                  bg-black/40 backdrop-blur-md border border-white/10
+                  flex items-center justify-center text-white
+                  hover:bg-black transition"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+              )}
+
+              <div
+                ref={tabsContainerRef}
+                onScroll={checkScrollPosition}
+                className="overflow-x-auto scrollbar-hide w-full px-10"
               >
-                <Tab key="all" title="All Posts"/>
-                {categories.map((category) => (
-                  <Tab 
-                    key={category.id} 
-                    title={`${category.name} (${category.postCount})`}
-                  />
-                ))}
-              </Tabs>
+                  <Tabs
+                    selectedKey={selectedCategory}
+                    onSelectionChange={(key) => {
+                      handleCategoryChange(key as string);
+                    }}
+                    variant="underlined"
+                    classNames={{
+                      tabList: "gap-6 flex-nowrap w-max",
+                      cursor: "w-full bg-primary",
+                      tabContent:
+                        "group-data-[selected=true]:text-cyan-400 whitespace-nowrap",
+                    }}
+                  >
+                    <Tab key="all" title="All Posts" />
+
+                    {categories.map((category) => (
+                      <Tab
+                        key={category.id}
+                        title={`${category.name} (${category.postCount})`}
+                      />
+                    ))}
+                  </Tabs>
+                </div>
+
+                {/* Right arrow */}
+                {showRightArrow && (
+                  <button
+                    onClick={() => scrollTabs('right')}
+                    className="absolute right-0 z-20 h-10 w-10 rounded-full 
+                    bg-black/40 backdrop-blur-md border border-white/10
+                    flex items-center justify-center text-white
+                    hover:bg-black transition"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                )}
+              </div>
 
               {tags.length > 0 && (
                 <div className="flex gap-2 flex-wrap">
@@ -135,7 +211,7 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       ) : (
-        /* Normal PostList display */
+        /* Normal postlist display */
         <PostList
           posts={posts}
           loading={loading}

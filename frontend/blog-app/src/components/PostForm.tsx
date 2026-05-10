@@ -1,18 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {
-  Button,
-  Card,
-  CardBody,
-  Input,
-  Select,
-  SelectItem,
-  Chip,
-  SelectSection,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem
-} from '@nextui-org/react';
+import {Button,Card,CardBody,Input,Select,SelectItem,Chip,SelectSection,Dropdown,DropdownTrigger,DropdownMenu,DropdownItem} from '@nextui-org/react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Heading from '@tiptap/extension-heading';
@@ -21,17 +8,7 @@ import OrderedList from '@tiptap/extension-ordered-list';
 import ListItem from '@tiptap/extension-list-item';
 import Image from '@tiptap/extension-image';
 
-import { 
-  Bold, 
-  Italic, 
-  Undo, 
-  Redo,
-  ImagePlus,
-  List,
-  ListOrdered,
-  ChevronDown,
-  X
-} from 'lucide-react';
+import { Bold, Italic, Undo, Redo,ImagePlus,List,ListOrdered,ChevronDown,X} from 'lucide-react';
 import { Post, Category, Tag, PostStatus } from '../services/apiService';
 import { apiService } from '../services/apiService';
 
@@ -191,7 +168,7 @@ const PostForm: React.FC<PostFormProps> = ({
 
   const selectProps = {
     variant: "bordered" as const,
-    classNames: inputStyles, // Use the lighter navy styles we created earlier
+    classNames: inputStyles, 
     listboxProps: {
       itemClasses: {
         base: [

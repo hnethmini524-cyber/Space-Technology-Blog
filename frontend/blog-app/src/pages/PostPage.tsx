@@ -44,17 +44,7 @@ const PostPage: React.FC<PostPageProps> = ({
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const postAuthorId = post?.author?.id;
-
-  //console.log("IDs:", { storedId, postAuthorId });
-  //console.log("Current User ID:", storedId);
   const token = localStorage.getItem('token');
-  console.log("Post Author ID:", post?.author?.id)
-  console.log("Local User ID:", localStorage.getItem('userId'))
-
-  console.log("--- AUTH CHECK ---");
-  //console.log("Stored UserID:", storedId);
-  console.log("Token Present:", !!token); 
-  console.log("------------------");
 
   const handleDeleteComment = async (commentId: string) => {
     if (!window.confirm('Are you sure you want to delete this comment?')) return;
@@ -65,9 +55,7 @@ const PostPage: React.FC<PostPageProps> = ({
       console.error("Failed to delete comment:", err);
     }
   };
-  //const currentUserId = localStorage.getItem('userId');
   const isAuthor = React.useMemo(() => {
-    // Use user?.userId from context instead of localStorage
     if (!user || !post?.author?.id) return false;
     return String(user.userId).toLowerCase() === String(post.author.id).toLowerCase();
   }, [user, post]);
@@ -147,12 +135,11 @@ const PostPage: React.FC<PostPageProps> = ({
   };
 
   const handleClap = async () => {
-    if (!post || !id || isClapping) return; // Ignore if already in progress
+    if (!post || !id || isClapping) return;
 
     try {
       setIsClapping(true); // Lock the action
       
-      // Optimistic UI update
       setIsClapped(true);
       setPost(prev => prev ? { ...prev, clapCount: (prev.clapCount || 0) + 1 } : prev);
       
@@ -325,7 +312,7 @@ const PostPage: React.FC<PostPageProps> = ({
               radius="full"
               size="sm"
               onPress={handleClap}
-              className={`group transition-all ${isClapped ? 'text-primary bg-primary/10' : 'text-white/60 hover:text-white'}`}
+              className={`group transition-all ${isClapped ? 'text-primary bg-primary/10 border-cyan-400' : 'text-white/60 hover:text-white border-cyan-400/50'}`}
               startContent={
                 <Heart  
                   size={18} 
@@ -348,20 +335,20 @@ const PostPage: React.FC<PostPageProps> = ({
             </Button>
             <Chip color="primary" variant="flat" size="sm" className="btn-category">{post.category.name}</Chip>
             {post.tags.map((tag) => (
-              <Chip key={tag.id} variant="dot" size="sm" className="border-white/20 text-white/60" startContent={<Tag size={12} />}>{tag.name}</Chip>
+              <Chip key={tag.id} variant="dot" size="sm" className="border-1 text-white/80 border-purple-500" startContent={<Tag size={12} />}>{tag.name}</Chip>
             ))}
           </div>
           
           <Divider className="mt-4 bg-white/10" />
 
-          {/* --- RESPONSES SECTION --- */}
+          {/* --- Responsive section --- */}
           <div className="w-full mt-8 space-y-10">
             <h2 className="text-2xl font-bold text-white">Responses ({comments.length})</h2>
             
-            {/* Input Area */}
+            {/* Input area */}
             <div className="w-full mt-8">
               {isAuthenticated ? (
-                /* Logged In View: Show the standard Textarea */
+                /* Logged In view: Show the standard Textarea */
                 <Card className="p-5 shadow-2xl bg-[#0b1121] border border-white/10">
                   <div className="flex gap-3 items-center mb-4">
                     <Avatar size="sm" name={localStorage.getItem('userName') || 'User'} />
@@ -407,15 +394,14 @@ const PostPage: React.FC<PostPageProps> = ({
                 </Card>
               ) : (
                 /* Unauthorized View: Show the "Log in to respond" message */
-                <Card className="p-8 shadow-sm border border-dashed border-default-300 bg-default-50/50 flex flex-col items-center gap-4">
-                  <div className="p-8 bg-white/5 border border-dashed border-white/20 flex flex-col items-center gap-4">
-                    <MessageCircle size={32} className="text-default-400" />
-                      <p className="text-default-600 font-medium">Log in to share your thoughts on this post.</p>
-                  </div>
+                <Card className="relative p-10 overflow-hidden bg-slate-950/40 border-1 border-white/10 backdrop-blur-md shadow-2xl flex flex-col items-center gap-6">
+                  
+                    <MessageCircle size={32} className="text-cyan-400" />
+                      <p className="text-slate-400 font-medium">Log in to share your thoughts on this post.</p>
                   <Button 
                     as={Link} 
                     to="/login" 
-                    variant="solid" 
+                    variant="shadow"
                     radius="full"
                     className="btn-primary"
                   >
@@ -424,7 +410,7 @@ const PostPage: React.FC<PostPageProps> = ({
                 </Card>
                 )}
             </div>
-            {/* Comments List */}
+            {/* Comments list */}
             <div className="space-y-12 pb-20">
               {comments.map((comment) => (
                 <div key={comment.id} className="p-4 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
@@ -437,7 +423,7 @@ const PostPage: React.FC<PostPageProps> = ({
                       </div>
                     </div>
 
-                    {/* DROP-DOWN MENU FOR DELETE */}
+                    {/* Drop down menu for delete button */}
                     <Dropdown placement="bottom-end" className="dark bg-[#0b1121] border border-white/10">
                       <DropdownTrigger>
                         <Button isIconOnly variant="light" radius="full" size="sm">
@@ -448,15 +434,14 @@ const PostPage: React.FC<PostPageProps> = ({
                         {(user && (String(user.userId) === String(comment.userId) || String(user.userId) === String(post?.author?.id))) ? (
                           <DropdownItem 
                             key="delete" 
-                            className="text-danger" 
-                            color="danger"
+                            className="bg-red-500/20 text-red-400" 
+                            //color="warning"
                             startContent={<Trash size={14} />}
                             onClick={() => handleDeleteComment(comment.id)}
                           >
                             Delete
                           </DropdownItem>
                         ) : (
-                          // We return an empty DropdownItem or null to keep the Menu happy
                           <DropdownItem key="none" className="hidden" />
                         )}
                       </DropdownMenu>
