@@ -46,21 +46,21 @@ public class AuthController {
     
     @PostMapping("/register") 
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) {
-        // This calls the register method we fixed in your AuthenticationServiceImpl
+        // This calls the register method 
         AuthResponse response = authenticationService.register(registerRequest);
         return ResponseEntity.ok(response);
     }
     
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
-        // This will be accessible at /api/v1/auth/forgot-password
+        // This is accessible at /api/v1/auth/forgot-password
         passwordResetService.createPasswordResetToken(request.get("email"));
         return ResponseEntity.ok(Map.of("message", "Recovery email sent."));
     }
 
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
-        // This will be accessible at /api/v1/auth/reset-password
+        // This is accessible at /api/v1/auth/reset-password
         passwordResetService.resetPassword(request.get("token"), request.get("password"));
         return ResponseEntity.ok(Map.of("message", "Password updated successfully."));
     }

@@ -16,7 +16,7 @@ public class CategoryMapperImpl implements CategoryMapper {
     return CategoryDto.builder()
         .id(category.getId())
         .name(category.getName())
-        // If your DTO has a postCount, you can calculate it here:
+        // PostCount calculate here
         .postCount(category.getPosts() != null ? category.getPosts().size() : 0)
         .build();
   }

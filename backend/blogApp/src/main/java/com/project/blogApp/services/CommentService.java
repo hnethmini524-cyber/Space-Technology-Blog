@@ -60,7 +60,7 @@ public class CommentService {
             throw new EntityNotFoundException("Comment not found");
         }
         
-        // 1. Perform atomic increment
+        // Perform atomic increment
         commentRepository.incrementLikes(commentId);
         Comment updatedComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found"));

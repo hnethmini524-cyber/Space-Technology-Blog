@@ -9,6 +9,6 @@ import com.project.blogApp.domain.entities.PasswordResetToken;
 
 @Repository
 public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken, Long> {
-    // This is required by your service to find the token from the URL
+    // This is required by service to find the token from the URL
     Optional<PasswordResetToken> findByToken(String token);
 }
