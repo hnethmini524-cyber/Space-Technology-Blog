@@ -104,13 +104,18 @@ Compared to the foundational blog application, the following major enhancements 
 
 # 📸 Application Screenshots
 
+<details>
+<summary>Click to Expand Screenshots</summary>
+
+<br>
+
 ## 🏠 Homepage
 
 ![Homepage](docs/screenshots/home-page.png)
 
 ---
 
-## 🔐 Post Page
+## ✍️ Post Page
 
 ![Post Page](docs/screenshots/post-page.png)
 
@@ -120,6 +125,7 @@ Compared to the foundational blog application, the following major enhancements 
 
 ![Sign Up Page](docs/screenshots/signUp-page.png)
 
+</details>
 ---
 
 # 🛠 Tech Stack
