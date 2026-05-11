@@ -13,7 +13,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Entity
-@Data // If using Lombok
+@Data 
 public class PasswordResetToken {
     
     private static final int EXPIRATION_MINUTES = 15;

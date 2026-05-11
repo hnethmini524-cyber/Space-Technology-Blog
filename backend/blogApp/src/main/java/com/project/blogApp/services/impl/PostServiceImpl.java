@@ -195,8 +195,7 @@ public class PostServiceImpl implements PostService {
             clapRepository.saveAndFlush(clap); // Force immediate write to catch the error here
             postRepository.save(post);
         } catch (DataIntegrityViolationException e) {
-            // This catches the 'fast click' duplicate insert.
-            // We simply fetch the record that the OTHER request just created and update it instead.
+            // This catches the 'fast click' duplicate insert
             Clap actualClap = clapRepository.findByPostAndUser(post, user)
                     .orElseThrow(() -> e); // Rethrow if it's a different integrity issue
             actualClap.setCount(actualClap.getCount() + 1);

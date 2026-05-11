@@ -55,7 +55,7 @@ public class PasswordResetService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
-        // Security Best Practice: Delete token after successful use
+        // Security: Delete token after successful use
         tokenRepository.delete(resetToken);
     }
 }

@@ -42,12 +42,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     
     @Override
     public AuthResponse register(RegisterRequest request) {
-        // 1. Check if user already exists
+        // Check if user already exists
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("This contributor is already in the system!");
         }
 
-        // 2. Build and hash the user
+        // Build and hash the user
         var user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
@@ -57,10 +57,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         userRepository.save(user);
 
-        // 3. Generate token using the local method
+        // Generate token using the local method
         var jwtToken = generateToken(new BlogUserDetails(user));
         
-        // 4. Return using builder (if @Builder is on AuthResponse)
+        // Return using builder 
         return AuthResponse.builder().token(jwtToken).build();
     }
 
