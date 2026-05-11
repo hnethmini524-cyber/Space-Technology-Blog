@@ -1,4 +1,4 @@
-# 🚀 Space Tech Blog
+# 🚀 Space Themed Blog Application
 
 A modern full-stack blogging platform focused on **Space Technology, Astronomy, Astrophysics, Cosmology, and Space Exploration**.
 
@@ -75,7 +75,6 @@ Compared to the foundational blog application, the following major enhancements 
 ## 👤 User Features
 
 - User Profile Page
-- Profile Information Management
 - User Posts & Draft Tabs
 - Authenticated user experience
 
@@ -145,9 +144,13 @@ Compared to the foundational blog application, the following major enhancements 
 ---
 
 # 🏗 System Architecture
+<details>
+<summary>Click to Expand Screenshot</summary>
 
-![System Architecture](docs/diagrams/system-architecture.png)
+<br>
+![System Architecture](docs/diagrams/system-architecture-diagram.png)
 
+</details>
 ---
 
 # 🧩 Project Architecture
@@ -346,7 +349,7 @@ This project helped strengthen knowledge in:
 
 # 📌 Acknowledgments
 
-This project is an extended and enhanced version of the Devtiro Blog Application.
+This project is an extended and enhanced version of the [Devtiro Blog Application](https://github.com/devtiro/devtiro-blog-app).
 
 The original project served as a foundational reference, while major features, architecture improvements, UI redesigns, and community-focused functionality were independently developed and customized for this platform.
 
