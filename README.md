@@ -34,7 +34,7 @@ The project emphasizes:
 Compared to the foundational blog application, the following major enhancements and customizations were independently designed and implemented:
 
 - Redesigned the platform into a Space Technology themed community blog
-- Implemented JWT Authentication & Spring Security workflows
+- Implemented JWT Authentication for registration & Spring Security workflows
 - Added Forgot Password / Reset Password functionality
 - Developed comment and reaction (clap/heart) system
 - Implemented user mentions using `@username`
@@ -144,6 +144,7 @@ Compared to the foundational blog application, the following major enhancements 
 ---
 
 # 🏗 System Architecture
+
 <details>
 <summary>Click to Expand Screenshot</summary>
 
