@@ -250,7 +250,7 @@ Mailtrap is used for:
 ## 1️⃣ Clone the Repository
 
 ```bash
-git clone [<repository-url>](https://github.com/hnethmini524-cyber/Space-Technology-Blog.git)
+git clone https://github.com/hnethmini524-cyber/Space-Technology-Blog.git
 ```
 
 ---
