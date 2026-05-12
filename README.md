@@ -143,17 +143,6 @@ Compared to the foundational blog application, the following major enhancements 
 
 ---
 
-# 🏗 System Architecture
-
-<details>
-<summary>Click to Expand Screenshot</summary>
-
-<br>
-![System Architecture](docs/diagrams/system-architecture-diagram.png)
-
-</details>
----
-
 # 🧩 Project Architecture
 
 The backend follows a layered architecture to improve maintainability, scalability, and separation of concerns.
@@ -352,7 +341,7 @@ This project helped strengthen knowledge in:
 
 This project is an extended and enhanced version of the [Devtiro Blog Application](https://github.com/devtiro/devtiro-blog-app).
 
-The original project served as a foundational reference, while major features, architecture improvements, UI redesigns, and community-focused functionality were independently developed and customized for this platform.
+The original project served as a foundational reference, while connecting image storage & email service, architecture improvements, UI redesigns, and community-focused functionality were independently developed and customized for this platform.
 
 ---
 
