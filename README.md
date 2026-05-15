@@ -141,6 +141,39 @@ Compared to the foundational blog application, the following major enhancements 
 | API Style | REST API |
 | Version Control | Git & GitHub |
 
+# 📌 API Reference
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /api/v1/auth/login | Authenticate user and receive JWT token |
+| POST | /api/v1/auth/register | Register user |
+| POST | /api/v1/auth/forgot-password | Send password reset email request |
+| POST | /api/v1/auth/reset-password | Reset password using email link |
+| POST | /api/v1/posts | Create a new post |
+| GET | /api/v1/posts | Get all published posts |
+| GET | /api/v1/posts/{id} | Get specific post |
+| GET | /api/v1/posts/drafts | Get draft posts (auth required) |
+| GET | /api/v1/posts/me | Get authenticated user posts |
+
+| PUT | /api/v1/posts/{id} | Update existing post |
+| DELETE | /api/v1/posts/{id} | Delete a post |
+| PATCH | /api/v1/posts/{id}/clap | Clap to a post |
+
+| GET | /api/v1/posts/{postId}/comments | Get all comments for a post |
+| POST | /api/v1/posts/{postId}/comments | Create a comment |
+| POST | /api/v1/comments/{commentId}/like | Like a comment |
+| DELETE | /api/v1/comments/{commentId} | Delete a comment |
+
+| GET | /api/v1/categories | Get all categories |
+| POST | /api/v1/categories | Create category |
+| DELETE | /api/v1/categories/{id} | Delete category |
+
+| GET | /api/v1/tags | Get all tags |
+| POST | /api/v1/tags | Create tag |
+| DELETE | /api/v1/tags/{id} | Delete tag |
+
+| POST | /api/v1/images/upload | Upload image |
+
 ---
 
 # 🧩 Project Architecture
